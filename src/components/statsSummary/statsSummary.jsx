@@ -373,9 +373,9 @@ export class StatsSummary extends Component {
           </div>
           <div>
             <NavButtons
-              firstLink="planPorDia"
+              firstLink="/daily_plan"
               firstName="atrás"
-              secondLink="compra"
+              secondLink="/purchase_info"
               secondName="Siguiente"
             />
           </div>

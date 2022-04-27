@@ -6,6 +6,7 @@ import Contract from './components/contract';
 import MonthlyPlan from './components/monthlyPlan';
 import DailyPlan from './components/dailyPlan/dailyPlan';
 import StatsSummary from './components/statsSummary/statsSummary';
+import PurchaseInfo from './components/purchaseInfo/purchaseInfo';
 export class Router extends Component {
   render() {
     return (
@@ -15,6 +16,7 @@ export class Router extends Component {
         <Route path="/daily_plan" element={<DailyPlan />} />
         <Route path="/monthly_plan" element={<MonthlyPlan />} />
         <Route path="/stats_summary" element={<StatsSummary />} />
+        <Route path="/purchase_info" element={<PurchaseInfo />} />
 
       </Routes>
     )

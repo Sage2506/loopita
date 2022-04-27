@@ -1,13 +1,42 @@
-import React,{ Component } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
 
 export class Home extends Component {
 
-  render (  ) {
-    return(
-    <div>
-      Home Works!
-    </div>
+  render() {
+    return (
+      <div>
+        <div className="cover__page">
+          <div className="grid_double">
+            <div style={{ textAlign: "center" }} >
+              <div style={{ flex: 7 }}></div>
+              <div style={{ flex: 1 }} class="desktop_button">
+                <Link to="/contract" style={{ maxWidth: '150px' }}>
+                  <button
+                    className="btn btn-primary btn-home contratar__Web "
+                  >Contratar
+                  </button>
+                </Link>
+              </div>
+              <h4 className="desktop_info">
+                Contrata una pauta en medios <br /> exteriores a la medida de tu marca
+              </h4>
+            </div>
+          </div>
+          <div style={{ textAlign: "center", paddingTop: '30px' }}>
+            <h4 className="mobile_info">
+              Contrata una pauta en medios exteriores a la medida de tu marca
+            </h4>
+          </div>
+          <Link to="/contract" className="contratar__mobil__a">
+            <button
+              className="btn btn-primary btn-home contratar__mobil"
+            >Contratar
+            </button>
+          </Link>
+        </div>
+      </div>
     );
   }
 }
@@ -18,4 +47,4 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = dispatch => ({
 })
 
-export default connect( mapStateToProps, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

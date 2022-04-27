@@ -1,3 +1,7 @@
+:root{
+  --primary: #199FFF;
+}
+
 .App {
   text-align: center;
 }
@@ -34,5 +38,46 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+.class__header {
+  flex-shrink: 0;
+  background-color: #037cf5;
+}
+
+.nav__bar{
+    background: var(--primary);
+    padding: 2rem;
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.footer__bar {
+  background: #199FFF;
+  padding: 2rem;
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  width: 35%;
+}
+
+@media screen and (min-width: 768px){
+  .logo {
+      width: 10%;
+  }
+  .footer__bar {
+      background: #199FFF;
+      padding: 2rem;
+      box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.1);
+      clear: both;
+      position: relative;
+      height: 100px;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .logo {
+      margin: 0 auto;
+      display: block;
   }
 }

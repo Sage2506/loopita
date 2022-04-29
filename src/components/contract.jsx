@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { setClient } from '../actions/client';
+import { setCampaignName } from '../actions/plan';
 import NavButtons from './common/navButtons';
 
 const listScreenT = [
@@ -18,22 +20,27 @@ export class Contract extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      nameClient: "",
+      name: "",
       email: "",
-      tel: "",
+      phone: "",
       camp: "",
       selectedScreen: null
     }
   }
 
+  componentDidMount = () => {
+    this.setState({
+      name : this.props.name,
+      email : this.props.email,
+      phone : this.props.phone,
+      camp : this.props.camp,
+      selectedScreen : this.props.selectedScreen,
+    })
+  }
   handleInputChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     })
-    const newClient = {
-      ...this.state,
-      [e.target.name]: e.target.value
-    }
     //setClient(newClient) replace by store the client on the redux
   }
 
@@ -47,6 +54,13 @@ export class Contract extends Component {
     this.setState({
       selectedScreen: screen
     })
+  }
+
+  saveProgress = () => {
+    console.log("save progress")
+    const {name, phone, email, camp, selectedScreen} = this.state
+    this.props.setClient({name, phone, email})
+    this.props.setCampaignName({campaignName:camp, screen: selectedScreen})
   }
 
   isChecked = (e, value) => {
@@ -64,7 +78,7 @@ export class Contract extends Component {
   }
 
   render() {
-    const { nameClient, email, tel, camp, selectedScreen } = this.state
+    const { name, email, phone, camp, selectedScreen } = this.state
     return (
       <div className="data__contrat-cont">
         <div className="grid__contrat">
@@ -77,8 +91,8 @@ export class Contract extends Component {
                   <input
                     type="text"
                     className={`form-control form-control-sm`}
-                    name="nameClient"
-                    value={nameClient}
+                    name="name"
+                    value={name}
                     onChange={this.handleInputChange}
                   />
                 </div>
@@ -99,8 +113,8 @@ export class Contract extends Component {
                   <input
                     type="text"
                     className={`form-control form-control-sm`}
-                    name="tel"
-                    value={tel}
+                    name="phone"
+                    value={phone}
                     onChange={this.handleInputChange}
                   />
                 </div>
@@ -163,13 +177,14 @@ export class Contract extends Component {
               </p>
             </div>
             <NavButtons
+              saveProgress={this.saveProgress}
               firstLink={'/daily_plan'}
               secondLink={'/monthly_plan'}
               firstName={'En serio'}
               secondName={'Muy en serio'}
               firstSubText={"plan por dia"}
               secondSubText={"plan mensual"}
-              disabledBtn={nameClient === '' || email === '' || tel === '' || selectedScreen === null}
+              disabledBtn={name === '' || email === '' || phone === '' || selectedScreen === null}
             />
           </div>
         </div>
@@ -179,9 +194,18 @@ export class Contract extends Component {
 }
 
 const mapStateToProps = store => ({
+  name: store.clientReducer.name,
+  email: store.clientReducer.email,
+  phone: store.clientReducer.phone,
+  camp: store.planReducer.campaignName,
+  selectedScreen: store.planReducer.screenSelected
 })
 
-const mapDispatchToProps = dispatch => ({
-})
+const mapDispatchToProps = dispatch => {
+  return {
+    setClient: data =>{ dispatch( setClient(data) )} ,
+    setCampaignName: data => { dispatch(setCampaignName(data))}
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Contract)

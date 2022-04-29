@@ -14,6 +14,7 @@ export class NavButtons extends Component {
     return(
       <div className="container__btns-info">
       <Link
+        onClick={this.props.saveProgress}
         className={`${disabledBtn ? `btn btn-primary btn-sm disabled disabled-link` : `btn btn-primary btn-sm`}`}
         to={firstLink} >
         {firstName}
@@ -25,6 +26,7 @@ export class NavButtons extends Component {
         )}
       </Link>
       <Link
+        onClick={this.props.saveProgress}
         className={`${disabledBtn ? `btn btn-primary btn-sm disabled disabled-link` : `btn btn-primary btn-sm`}`}
         to={secondLink} >
         {secondName}

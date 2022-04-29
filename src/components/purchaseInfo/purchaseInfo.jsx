@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import ButtonsWithMail from './buttonsWithMail';
+import BuyForm from './buyForm';
 
 export class PurchaseInfo extends Component {
 
@@ -45,7 +47,7 @@ export class PurchaseInfo extends Component {
   render() {
     var { redirect, disableManually } = this.state
     if (redirect) {
-      return (<Redirect to="/" />)
+      return (<Navigate to="/" />)
     } else {
       const { purchaseConfirmationInfo } = this.state
       return (
@@ -57,8 +59,8 @@ export class PurchaseInfo extends Component {
           <ButtonsWithMail
             firstName="Atrás"
             secondName="Siguiente"
-            firstLink="archivos"
-            secondLink="finalizacion"
+            firstLink="/stats_summary"
+            secondLink="/endoing"
             handleSubmit={this.handleSubmit}
             submitDisabled={disableManually}
           />

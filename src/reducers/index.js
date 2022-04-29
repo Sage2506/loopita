@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
-import { dishReducer } from './dish';
+import { clientReducer } from './client';
+import { planReducer } from './plan';
 export default combineReducers({
-  dishReducer,
+  clientReducer,
+  planReducer
 })

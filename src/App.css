@@ -519,3 +519,76 @@ max-width: 100%;
   cursor: pointer;
   font-size: 22px;
 }
+
+.container__plan-mensual {
+  padding: 2rem;
+}
+
+.mensual_plan_dobule_section_grid {
+display: inherit;
+}
+
+
+@media (min-width: 768px){
+.mensual_plan_dobule_section_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 2rem;
+}
+}
+
+.title {
+  color: var(--title);
+}
+
+.subtitle__plan-mensual {
+ color: var(--subtitle-grey);
+}
+
+.container__plan-mensual .card {
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.select__item {
+  background-color: #265CFF;
+  color: #fff;
+}
+
+.select__item .card-title {
+  color: #fff;
+}
+
+.container__plan-mensual .card .card-text {
+  font-size: 12px;
+  text-align: justify;
+}
+
+.container__plan-mensual .card .row {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* btns */
+.cont__plan-men {
+  width: 100%;
+  padding: 1rem;
+}
+
+.btns__plan-men {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cont__plan-men .btns__plan-men .btn-next {
+  background: var(--primary);
+  opacity: .8;
+  color: #fff;
+}
+
+.cont__plan-men .btns__plan-men .btn {
+  width: 30%;
+}
+

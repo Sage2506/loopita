@@ -175,6 +175,10 @@ export class StatsSummary extends Component {
     //store into redux setLocalFileAdd(fileData)
   }
 
+  saveProgress = () => {
+    console.log("Save file info progress")
+  }
+
   render() {
     const {
       file,
@@ -373,8 +377,8 @@ export class StatsSummary extends Component {
           </div>
           <div>
             <NavButtons
-              firstLink="/daily_plan"
-              firstName="atrás"
+              saveProgress={this.saveProgress}
+              backLink={true}
               secondLink="/purchase_info"
               secondName="Siguiente"
             />

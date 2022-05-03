@@ -3,11 +3,11 @@ import { Route, Routes } from "react-router-dom";
 import { connect } from 'react-redux';
 import { Home } from './components/home';
 import Contract from './components/contract';
-import MonthlyPlan from './components/monthlyPlan';
 import DailyPlan from './components/dailyPlan/dailyPlan';
-import StatsSummary from './components/statsSummary/statsSummary';
-import PurchaseInfo from './components/purchaseInfo/purchaseInfo';
 import Ending from './components/ending';
+import MonthlyPlan from './components/monthlyPlan/monthlyPlan';
+import PurchaseInfo from './components/purchaseInfo/purchaseInfo';
+import StatsSummary from './components/statsSummary/statsSummary';
 export class Router extends Component {
   render() {
     return (

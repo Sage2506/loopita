@@ -3,6 +3,11 @@ import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 export class NavButtons extends Component {
 
+  goBack = () => {
+    this.props.saveProgress()
+    window.history.go(-1);
+  }
+
   render (  ) {
     const {firstLink,
       secondLink,
@@ -10,11 +15,17 @@ export class NavButtons extends Component {
       secondName,
       disabledBtn,
       firstSubText,
-      secondSubText} = this.props
+      secondSubText,
+      backLink,
+      saveProgress} = this.props
     return(
       <div className="container__btns-info">
-      <Link
-        onClick={this.props.saveProgress}
+        { backLink && <a onClick={this.goBack}
+        className={`${disabledBtn ? `btn btn-primary btn-sm disabled disabled-link` : `btn btn-primary btn-sm`}`}
+        >Atrás
+        </a>}
+      {firstLink && <Link
+        onClick={saveProgress}
         className={`${disabledBtn ? `btn btn-primary btn-sm disabled disabled-link` : `btn btn-primary btn-sm`}`}
         to={firstLink} >
         {firstName}
@@ -24,9 +35,9 @@ export class NavButtons extends Component {
             {firstSubText}
           </span>
         )}
-      </Link>
-      <Link
-        onClick={this.props.saveProgress}
+      </Link>}
+      {secondLink && <Link
+        onClick={saveProgress}
         className={`${disabledBtn ? `btn btn-primary btn-sm disabled disabled-link` : `btn btn-primary btn-sm`}`}
         to={secondLink} >
         {secondName}
@@ -36,7 +47,7 @@ export class NavButtons extends Component {
             {secondSubText}
           </span>
         )}
-      </Link>
+      </Link>}
     </div>
     );
   }

@@ -28,6 +28,10 @@ export class PurchaseInfo extends Component {
     this.setState({ purchaseConfirmationInfo: purchaseInfo })
   }
 
+  saveProgress = () => {
+    console.log("save progress");
+  }
+
   handleSubmit = () => {
     /*
     TODO: fix submit
@@ -63,6 +67,7 @@ export class PurchaseInfo extends Component {
             secondLink="/endoing"
             handleSubmit={this.handleSubmit}
             submitDisabled={disableManually}
+            saveProgress={this.saveProgress}
           />
         </div>
       )

@@ -6,9 +6,11 @@ import Layout from './components/layout';
 import Router from './router';
 const store = configureStore();
 
+
+
 function App() {
   return (
-    <Provider store={store}>
+    <Provider store={store} >
       <Layout>
         <BrowserRouter>
           <Router />

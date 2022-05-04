@@ -11,7 +11,7 @@ export class Home extends Component {
           <div className="grid_double">
             <div style={{ textAlign: "center" }} >
               <div style={{ flex: 7 }}></div>
-              <div style={{ flex: 1 }} class="desktop_button">
+              <div style={{ flex: 1 }} className="desktop_button">
                 <Link to="/contract" style={{ maxWidth: '150px' }}>
                   <button
                     className="btn btn-primary btn-home contratar__Web "

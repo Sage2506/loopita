@@ -1,4 +1,4 @@
-import { SET_CAMPAIGN_NAME, SET_MONTHLY_PLAN } from "../actions/plan";
+import { SET_CAMPAIGN_NAME, SET_DAILY_PLAN, SET_MONTHLY_PLAN } from "../actions/plan";
 
 const initialPlan = {
   name: "",
@@ -6,7 +6,8 @@ const initialPlan = {
   screenSelected: null,
   monthlyPlan: {
     price: 0
-  }
+  },
+  dailyPlan : []
 }
 
 export const planReducer = ( state = initialPlan, action) => {
@@ -15,6 +16,8 @@ export const planReducer = ( state = initialPlan, action) => {
       return {...state, campaignName: action.data.campaignName, screenSelected: action.data.screen}
     case SET_MONTHLY_PLAN:
       return {...state, monthlyPlan: action.data}
+    case SET_DAILY_PLAN:
+      return {...state, dailyPlan:action.data}
     default:
       return state;
   }

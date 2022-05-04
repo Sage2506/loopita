@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { setDailyPlan } from '../../actions/plan';
 import CalendarRange from './calendarRange';
 
 
 export class DailyPlan extends Component {
+
+  saveProgress = data => {
+    this.props.setDailyPlan(data)
+  }
 
   render() {
     return (
@@ -20,7 +25,10 @@ export class DailyPlan extends Component {
           </p>
         </div>
         <div className="calendar__cont">
-          <CalendarRange></CalendarRange>
+          <CalendarRange
+            dailyPlan={this.props.dailyPlan}
+            saveProgress={this.saveProgress}
+          />
         </div>
       </div>
     );
@@ -28,9 +36,13 @@ export class DailyPlan extends Component {
 }
 
 const mapStateToProps = store => ({
+  dailyPlan: store.planReducer.dailyPlan
 })
 
-const mapDispatchToProps = dispatch => ({
-})
+const mapDispatchToProps = dispatch => {
+  return {
+    setDailyPlan: data => { dispatch(setDailyPlan(data)) }
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(DailyPlan)

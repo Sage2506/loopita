@@ -6,6 +6,7 @@ import { es } from 'date-fns/locale';
 import NavButtons from '../common/navButtons';
 import TimePickerDate from './timePickerDate';
 import TotalAmount from './totalAmount';
+import { parseDayToDDMMYYYY } from '../../utils/common';
 
 const locale = es;
 export default class CalendarRange extends Component {
@@ -25,28 +26,25 @@ export default class CalendarRange extends Component {
     }
   }
 
+  componentDidMount (){
+    const { dailyPlan } = this.props
+    console.log(dailyPlan);
+    this.setState({
+      selectedDays : dailyPlan.map( dailyItem => dailyItem.date),
+      addHoursList : dailyPlan
+    })
+  }
+
+  saveProgress = () => {
+    this.props.saveProgress(this.state.addHoursList)
+  }
+
   handleDayClick = (day, { selected }) => {
-    let dayParsed = day.getDate();
-    if (dayParsed < 10) {
-      dayParsed = '0' + dayParsed
-    } else {
-      dayParsed = dayParsed.toString()
-    }
-    let monthParsed = day.getMonth();
-    if (monthParsed < 10) {
-      monthParsed = '0' + monthParsed
-    } else {
-      monthParsed = monthParsed.toString()
-    }
-    const year = day.getFullYear();
-    const parsedDate = dayParsed + '-' + monthParsed + '-' + year
-    // cuando viene selected borrarlo de la lista, cuando viene undefined agregarlo
-    const selectDays = this.state.selectedDays.concat()
+    const parsedDate = parseDayToDDMMYYYY(day)
+    const selectDays = this.state.selectedDays;
     const selectedAddHoursList = this.state.addHoursList.concat()
     if (selected) {
-      const selectedIndex = selectDays.findIndex(selectedDay => true
-        // DateUtils.isSameDay(selectedDay, day) TODO: find a way to calculate same day
-      );
+      const selectedIndex = selectDays.findIndex(selectedDay => this.compareDays(selectedDay,day));
       selectDays.splice(selectedIndex, 1);
       const addItemIndex = selectedAddHoursList.findIndex(selectedAddHourItem => selectedAddHourItem.stringDate === parsedDate)
       selectedAddHoursList.splice(addItemIndex, 1)
@@ -56,7 +54,8 @@ export default class CalendarRange extends Component {
       var newAddDate = {
         stringDate: parsedDate,
         startHour: 6,
-        endHour: 9
+        endHour: 9,
+        date: day
       }
       selectedAddHoursList.push(newAddDate)
       // store into reducer addSelectedDate(newAddDate)
@@ -83,16 +82,20 @@ export default class CalendarRange extends Component {
     this.setState({ total: 750 }) //totalsResult.total})
   }
 
+  compareDays = (dayOne, dayTwo) => {
+    return parseDayToDDMMYYYY(dayOne) === parseDayToDDMMYYYY(dayTwo)
+  }
+
   render() {
     const { selectedDays, dateTimeItems, price, amount, total, addHoursList } = this.state
     return (
       <div>
         <div className="container__calendar">
           <DayPicker
-            selectedDays={selectedDays}
+            mode='multiple'
+            selected={selectedDays}
             onDayClick={this.handleDayClick}
             locale={locale}
-            disabled={true}
             className="calendar"
           />
           <p>Horario</p>
@@ -112,14 +115,14 @@ export default class CalendarRange extends Component {
         </div>
         <div style={{ padding: "1rem" }}>
           <NavButtons
-            firstName="Atrás"
-            secondName="Siguiente"
-            firstLink="/contrat"
-            secondLink="/stats_summary"
+            backLink={true}
             disabledBtn={this.state.selectedDays.length < 1}
+            saveProgress={this.saveProgress}
+            secondLink="/stats_summary"
+            secondName="Siguiente"
           />
         </div>
-        <TotalAmount amount={total}/>
+        <TotalAmount amount={total} />
       </div>
     );
   }

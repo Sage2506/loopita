@@ -34,3 +34,22 @@ export const calculateDailyServiceTotals = (dailyData) => {
   const total = maxTotal + minTotal
   return { total, minTotal, maxTotal, totalHours, lowHours, highHours }
 }
+
+
+export const parseDayToDDMMYYYY = ( day ) => {
+  let dayParsed = day.getDate();
+    if (dayParsed < 10) {
+      dayParsed = '0' + dayParsed
+    } else {
+      dayParsed = dayParsed.toString()
+    }
+    let monthParsed = day.getMonth();
+    if (monthParsed < 10) {
+      monthParsed = '0' + monthParsed
+    } else {
+      monthParsed = monthParsed.toString()
+    }
+    const year = day.getFullYear();
+    return dayParsed + '-' + monthParsed + '-' + year
+
+}

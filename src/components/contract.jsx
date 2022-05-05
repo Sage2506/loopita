@@ -57,7 +57,6 @@ export class Contract extends Component {
   }
 
   saveProgress = () => {
-    console.log("save progress")
     const {name, phone, email, camp, selectedScreen} = this.state
     this.props.setClient({name, phone, email})
     this.props.setCampaignName({campaignName:camp, screen: selectedScreen})

@@ -7,7 +7,8 @@ const initialPlan = {
   monthlyPlan: {
     price: 0
   },
-  dailyPlan : []
+  dailyPlan : [],
+  planType : ''
 }
 
 export const planReducer = ( state = initialPlan, action) => {
@@ -15,9 +16,9 @@ export const planReducer = ( state = initialPlan, action) => {
     case SET_CAMPAIGN_NAME:
       return {...state, campaignName: action.data.campaignName, screenSelected: action.data.screen}
     case SET_MONTHLY_PLAN:
-      return {...state, monthlyPlan: action.data}
+      return {...state, monthlyPlan: action.data, planType: 'monthly'}
     case SET_DAILY_PLAN:
-      return {...state, dailyPlan:action.data}
+      return {...state, dailyPlan:action.data, planType: 'daily'}
     default:
       return state;
   }

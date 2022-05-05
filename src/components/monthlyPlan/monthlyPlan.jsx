@@ -9,7 +9,6 @@ import MonthlyPlanCard from './monthlyPlanCard';
 export class MonthlyPlan extends Component {
 
   saveProgress = () =>{
-    console.log("save progress")
   }
 
   render() {

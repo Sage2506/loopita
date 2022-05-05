@@ -13,6 +13,11 @@ export const currencyFormat = (num=0) => {
   }
 }
 
+export const percentRounded = ( val = 0, percent = 100, decimals = 2) => {
+  var result = val * percent / 100
+  return result.toFixed(decimals)
+}
+
 export const calculateDailyServiceTotals = (dailyData) => {
   const price = {
     valueA: 50,
@@ -34,7 +39,6 @@ export const calculateDailyServiceTotals = (dailyData) => {
   const total = maxTotal + minTotal
   return { total, minTotal, maxTotal, totalHours, lowHours, highHours }
 }
-
 
 export const parseDayToDDMMYYYY = ( day ) => {
   let dayParsed = day.getDate();

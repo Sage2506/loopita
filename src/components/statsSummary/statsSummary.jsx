@@ -45,6 +45,12 @@ export class StatsSummary extends Component {
 
   componentDidMount = () => {
     //TODO: print screen name
+    let { planType } = this.props
+    if( planType === 'monthly') {
+      this.calculateDailyTotal()
+    } else {
+
+    }
     //TODO: show stellar picture
     //TODO: preview add inside stellar picture
     // store in reducer const screen = getLocalScreen(); // the selected screen for the list
@@ -114,6 +120,9 @@ export class StatsSummary extends Component {
   }
 
   calculateDailyTotal = (dailyServiceConfig) => {
+    const { dailyPlan } = this.props
+    const { total, minTotal, maxTotal, totalHours } = calculateDailyServiceTotals(dailyPlan)
+
     const statistics = {
       ageRangeFifteenToNineteen: 0,
       ageRangeFourtyfiveToFiftyfour: 0,
@@ -136,7 +145,6 @@ export class StatsSummary extends Component {
       totalSpots: 0,
       women: 0,
     }
-    const { total, minTotal, maxTotal, totalHours } = calculateDailyServiceTotals(dailyServiceConfig)
     //store into redux setSelectedPlan({ id: -1 , price : total})
     statistics.total = total;
     statistics.peakHour = maxTotal / 10;
@@ -286,7 +294,9 @@ export class StatsSummary extends Component {
                 </tr>
                 <tr>
                   <td>C+</td>
-                  <td>{profileCPlus} </td>
+                  <td>
+                    {profileCPlus}
+                    </td>
                   <td>(35%)</td>
                 </tr>
                 <tr>
@@ -393,6 +403,9 @@ export class StatsSummary extends Component {
 }
 
 const mapStateToProps = store => ({
+  planType: store.planReducer.planType,
+  dailyPlan : store.planReducer.dailyPlan,
+  monthlyPlan : store.planReducer.monthlyPlan
 })
 
 const mapDispatchToProps = dispatch => ({

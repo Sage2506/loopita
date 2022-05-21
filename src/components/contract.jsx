@@ -7,7 +7,7 @@ import NavButtons from './common/navButtons';
 const listScreenT = [
   {
     id: 1,
-    name: 'PantallaRio 1',
+    name: 'Pantalla Zona dorada, Rio Tijuana',
     title: '1 hora',
     service: '12 pm',
     state: false,

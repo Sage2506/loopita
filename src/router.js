@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Routes } from "react-router-dom";
 import { connect } from 'react-redux';
-import { Home } from './components/home';
+import Home from './components/home';
 import Contract from './components/contract';
 import DailyPlan from './components/dailyPlan/dailyPlan';
 import Ending from './components/ending';

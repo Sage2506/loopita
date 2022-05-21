@@ -7,7 +7,7 @@ export default class TimePickerDate extends Component {
       stringDate: "",
       startHour: 6,
       endHour: 9,
-      earliestHour : 6,
+      earliestHour: 6,
       latestHour: 24
     }
   }
@@ -18,7 +18,7 @@ export default class TimePickerDate extends Component {
 
   startTimeUp = () => {
     const { startHour, endHour } = this.state
-    if (endHour - startHour > 1 && startHour !== this.state.latestHour-1) {
+    if (endHour - startHour > 1 && startHour !== this.state.latestHour - 1) {
       this.changeTime(startHour + 1, 'startHour')
     }
   }
@@ -39,18 +39,18 @@ export default class TimePickerDate extends Component {
 
   endTimeDown = () => {
     const { endHour, startHour, } = this.state
-    if (endHour - startHour > 1 && startHour !== this.state.earliestHour+1) {
+    if (endHour - startHour > 1 && startHour !== this.state.earliestHour + 1) {
       this.changeTime(endHour - 1, 'endHour')
     }
   }
 
-  parseHourToAmPm = ( hour ) => {
-    if( hour === 12){
+  parseHourToAmPm = (hour) => {
+    if (hour === 12) {
       return `12:00 PM`
-    } else if( hour > 12 && hour < 24) {
-      return `${hour-12}:00 PM`
-    } else if ( hour === 24){
-      return `${hour-12}:00 AM`
+    } else if (hour > 12 && hour < 24) {
+      return `${hour - 12}:00 PM`
+    } else if (hour === 24) {
+      return `${hour - 12}:00 AM`
     } else {
       return `${hour}:00 AM`
     }
@@ -77,13 +77,17 @@ export default class TimePickerDate extends Component {
     this.props.changeAddTime({ ...this.state, [hourToChange]: newHour })
   }
 
+  removeDate = () => {
+    this.props.removeDate(this.props.getDate)
+  }
+
   render() {
     const { startTimeDown, startTimeUp, endTimeDown, endTimeUp, state } = this
     const { stringDate, startHour, endHour } = state
     return (
       <div>
-        {stringDate}
-        <div className="grid__contrat">
+        {stringDate} <button className='icon-button' onClick={this.removeDate}><i className="fas fa-trash"></i></button>
+        <div className="display-columns-wrapp">
           <div>
             Hora inicio:
             <div className="input-group inline-group">
@@ -92,7 +96,7 @@ export default class TimePickerDate extends Component {
                   <i className="fa fa-minus"></i>
                 </button>
               </div>
-              <input className="form-control quantity" value={this.parseHourToAmPm(startHour)} type="text" name="startHour" id="startHour" readOnly={true}/>
+              <input className="form-control quantity" value={this.parseHourToAmPm(startHour)} type="text" name="startHour" id="startHour" readOnly={true} />
               <div className="input-group-append">
                 <button className="btn btn-outline-secondary btn-plus" onClick={startTimeUp}>
                   <i className="fa fa-plus"></i>

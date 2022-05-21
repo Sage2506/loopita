@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-
+import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import NavButtons from '../common/navButtons';
 import TimePickerDate from './timePickerDate';
@@ -26,11 +26,11 @@ export default class CalendarRange extends Component {
     }
   }
 
-  componentDidMount (){
+  componentDidMount() {
     const { dailyPlan } = this.props
     this.setState({
-      selectedDays : dailyPlan.map( dailyItem => dailyItem.date),
-      addHoursList : dailyPlan
+      selectedDays: dailyPlan.map(dailyItem => dailyItem.date),
+      addHoursList: dailyPlan
     })
   }
 
@@ -49,18 +49,25 @@ export default class CalendarRange extends Component {
 
   setDays = (days) => {
     this.setState({
-      selectedDays : days,
+      selectedDays: days,
       addHoursList: days.map(this.createHourItem)
     })
   }
 
   createHourItem = (day) => {
     return {
-      stringDate : parseDayToDDMMYYYY(day),
-      startHour: 6,
-      endHour: 9,
+      stringDate: parseDayToDDMMYYYY(day),
+      startHour: 7,
+      endHour: 12,
       date: day
     }
+  }
+
+  removeDate = (date) => {
+    this.setState({
+      selectedDays : this.state.selectedDays.filter( item => format(item,'P') !== selectedDate),
+      addHoursList : this.state.addHoursList.filter( item => format(item.date,'P') !== selectedDate)
+    })
   }
 
   compareDays = (dayOne, dayTwo) => {
@@ -88,6 +95,7 @@ export default class CalendarRange extends Component {
                 dateTimeItems={dateTimeItems}
                 price={price}
                 amount={amount}
+                removeDate={this.removeDate}
                 changeAddTime={this.changeAddTime}
               />
             </li>
@@ -103,7 +111,7 @@ export default class CalendarRange extends Component {
             secondName="Siguiente"
           />
         </div>
-        <TotalAmount amount={ calculateDailyServiceTotals(addHoursList).total} />
+        <TotalAmount amount={calculateDailyServiceTotals(addHoursList).total} />
       </div>
     );
   }

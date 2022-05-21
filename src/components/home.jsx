@@ -1,9 +1,25 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
+import { setEditable } from '../actions/editable';
 
 export class Home extends Component {
-
+  componentDidMount() {
+    axios.get('http://localhost/loopita/data.php').then(response => {
+      if (!!response.data) {
+        const variables = {}
+        response.data.constants.forEach(constant => {
+          variables[constant.tag] = { description: constant.description, value: constant.constant }
+        });
+        response.data.labels.forEach(label => {
+          variables[label.tag] = { description: label.description, value: label.text }
+        })
+        console.log("setting editables");
+        this.props.setEditables(variables)
+      }
+    })
+  }
   render() {
     return (
       <div>
@@ -42,9 +58,13 @@ export class Home extends Component {
 }
 
 const mapStateToProps = store => ({
+  loaded: store.editableReducer.loaded
 })
 
-const mapDispatchToProps = dispatch => ({
-})
+const mapDispatchToProps = dispatch => {
+  return {
+    setEditables: data => { dispatch(setEditable(data)) }
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

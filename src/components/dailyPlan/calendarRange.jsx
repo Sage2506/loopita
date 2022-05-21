@@ -64,6 +64,7 @@ export default class CalendarRange extends Component {
   }
 
   removeDate = (date) => {
+    const selectedDate = format(date.date,'P');
     this.setState({
       selectedDays : this.state.selectedDays.filter( item => format(item,'P') !== selectedDate),
       addHoursList : this.state.addHoursList.filter( item => format(item.date,'P') !== selectedDate)

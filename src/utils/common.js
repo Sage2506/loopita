@@ -69,7 +69,6 @@ export const initVariables = (callback) => {
         response.data.labels.forEach(label => {
           variables[label.tag] = { description: label.description, value: label.text }
         })
-        console.log("setting editables");
         callback(variables)
       }
     })

@@ -38,7 +38,9 @@ export class Contract extends Component {
       camp: this.props.camp,
       selectedScreen: this.props.selectedScreen,
     })
-    initVariables(this.props.setEditables)
+    if(!this.props.loaded){
+      initVariables(this.props.setEditables)
+    }
   }
 
   handleInputChange = e => {

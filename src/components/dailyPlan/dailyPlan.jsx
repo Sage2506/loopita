@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { setEditable } from '../../actions/editable';
 import { setDailyPlan } from '../../actions/plan';
+import { initVariables } from '../../utils/common';
 import CalendarRange from './calendarRange';
 
 
 export class DailyPlan extends Component {
 
+  componentDidMount(){
+    if(!this.props.loaded){
+      initVariables(this.props.setEditables)
+    }
+  }
   saveProgress = data => {
     this.props.setDailyPlan(data)
   }
@@ -36,12 +43,14 @@ export class DailyPlan extends Component {
 }
 
 const mapStateToProps = store => ({
-  dailyPlan: store.planReducer.dailyPlan
+  dailyPlan: store.planReducer.dailyPlan,
+  loaded: store.editableReducer.loaded
 })
 
 const mapDispatchToProps = dispatch => {
   return {
-    setDailyPlan: data => { dispatch(setDailyPlan(data)) }
+    setDailyPlan: data => { dispatch(setDailyPlan(data)) },
+    setEditables: data => { dispatch(setEditable(data)) }
   }
 }
 

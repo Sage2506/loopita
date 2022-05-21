@@ -30,11 +30,11 @@ export class Contract extends Component {
 
   componentDidMount = () => {
     this.setState({
-      name : this.props.name,
-      email : this.props.email,
-      phone : this.props.phone,
-      camp : this.props.camp,
-      selectedScreen : this.props.selectedScreen,
+      name: this.props.name,
+      email: this.props.email,
+      phone: this.props.phone,
+      camp: this.props.camp,
+      selectedScreen: this.props.selectedScreen,
     })
   }
   handleInputChange = e => {
@@ -46,6 +46,7 @@ export class Contract extends Component {
 
   handleSubmit = e => {
     e.preventDefault()
+
     //setClient(this.state) replace by store the client on the redux
 
   }
@@ -57,9 +58,9 @@ export class Contract extends Component {
   }
 
   saveProgress = () => {
-    const {name, phone, email, camp, selectedScreen} = this.state
-    this.props.setClient({name, phone, email})
-    this.props.setCampaignName({campaignName:camp, screen: selectedScreen})
+    const { name, phone, email, camp, selectedScreen } = this.state
+    this.props.setClient({ name, phone, email })
+    this.props.setCampaignName({ campaignName: camp, screen: selectedScreen })
   }
 
   isChecked = (e, value) => {
@@ -86,7 +87,7 @@ export class Contract extends Component {
               <p className="title__form"> Vas en grande con Loopita </p>
               <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
-                  <label>Nombre completo</label>
+                  <label className='required'>Nombre completo</label>
                   <input
                     type="text"
                     className={`form-control form-control-sm`}
@@ -97,7 +98,7 @@ export class Contract extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label>Correo electrónico</label>
+                  <label className='required'>Correo electrónico</label>
                   <input
                     type="email"
                     className={`form-control form-control-sm `}
@@ -108,7 +109,7 @@ export class Contract extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label>Teléfono</label>
+                  <label className='required'>Teléfono</label>
                   <input
                     type="text"
                     className={`form-control form-control-sm`}
@@ -202,8 +203,8 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    setClient: data =>{ dispatch( setClient(data) )} ,
-    setCampaignName: data => { dispatch(setCampaignName(data))}
+    setClient: data => { dispatch(setClient(data)) },
+    setCampaignName: data => { dispatch(setCampaignName(data)) }
   }
 }
 

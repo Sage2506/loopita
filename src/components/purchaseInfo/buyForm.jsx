@@ -68,7 +68,7 @@ export default class BuyForm extends Component {
                     </div>
 
                     <div className="form-group ">
-                        <label>Forma de pago</label>
+                        <label className='required'>Forma de pago</label>
                         <select value={payment_mode || 'Efectivo'} className="form-control" name="payment_mode" onChange={handleInputChange}>
                             <option value={'Efectivo'}>Efectivo</option>
                             <option value={'Cheque'}>Cheque</option>

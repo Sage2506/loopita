@@ -58,7 +58,7 @@ export default class CalendarRange extends Component {
     return {
       stringDate: parseDayToDDMMYYYY(day),
       startHour: 7,
-      endHour: 12,
+      endHour: 24,
       date: day
     }
   }

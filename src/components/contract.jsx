@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setClient } from '../actions/client';
+import { setEditable } from '../actions/editable';
 import { setCampaignName } from '../actions/plan';
+import { initVariables } from '../utils/common';
 import NavButtons from './common/navButtons';
 
 const listScreenT = [
@@ -36,7 +38,9 @@ export class Contract extends Component {
       camp: this.props.camp,
       selectedScreen: this.props.selectedScreen,
     })
+    initVariables(this.props.setEditables)
   }
+
   handleInputChange = e => {
     this.setState({
       [e.target.name]: e.target.value
@@ -79,6 +83,7 @@ export class Contract extends Component {
 
   render() {
     const { name, email, phone, camp, selectedScreen } = this.state
+    const { loaded, homeInputFourLabel } = this.props
     return (
       <div className="data__contrat-cont">
         <div className="grid__contrat">
@@ -96,7 +101,6 @@ export class Contract extends Component {
                     onChange={this.handleInputChange}
                   />
                 </div>
-
                 <div className="form-group">
                   <label className='required'>Correo electrónico</label>
                   <input
@@ -107,7 +111,6 @@ export class Contract extends Component {
                     onChange={this.handleInputChange}
                   />
                 </div>
-
                 <div className="form-group">
                   <label className='required'>Teléfono</label>
                   <input
@@ -120,7 +123,7 @@ export class Contract extends Component {
                 </div>
                 <hr />
                 <div className="form-group ">
-                  <label>Nombre de campaña</label>
+                  <label>{loaded ? homeInputFourLabel.value : 'Nombre de campaña'}</label>
                   <input
                     type="text"
                     className={`form-control form-control-sm `}
@@ -198,13 +201,16 @@ const mapStateToProps = store => ({
   email: store.clientReducer.email,
   phone: store.clientReducer.phone,
   camp: store.planReducer.campaignName,
-  selectedScreen: store.planReducer.screenSelected
+  selectedScreen: store.planReducer.screenSelected,
+  homeInputFourLabel: store.editableReducer.variables.homeInputFourLabel,
+  loaded: store.editableReducer.loaded
 })
 
 const mapDispatchToProps = dispatch => {
   return {
     setClient: data => { dispatch(setClient(data)) },
-    setCampaignName: data => { dispatch(setCampaignName(data)) }
+    setCampaignName: data => { dispatch(setCampaignName(data)) },
+    setEditables : data => { dispatch(setEditable(data))}
   }
 }
 

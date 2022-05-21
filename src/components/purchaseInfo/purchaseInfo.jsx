@@ -78,7 +78,11 @@ export class PurchaseInfo extends Component {
     const data = this.setSubmitData()
     axios.post('https://loopita.impactovisual.info/api/contact/index.php', data).then(response => {
       if (response.data.sent) {
-        alert('¡Pronto nos contactaremos contigo!')
+        let msj = '¡Pronto nos contactaremos contigo!'
+        if(this.props.confirmMessage){
+          msj = this.props.confirmMessage;
+        }
+        alert(msj)
         this.setState({ disableManually: true })
         this.setState({ redirect: true })
       } else {
@@ -128,7 +132,8 @@ const mapStateToProps = store => ({
   payment_mode: store.planReducer.payment_mode,
   promo_code: store.planReducer.promo_code,
   fullData : store,
-  planType : store.planReducer.planType
+  planType : store.planReducer.planType,
+  confirmMessage : store.editableReducer.confirmMessage
 })
 
 const mapDispatchToProps = dispatch => {

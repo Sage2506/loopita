@@ -1,3 +1,4 @@
+import axios from 'axios';
 export const currencyFormat = (num=0) => {
   if (num !== undefined && num !== null && num !== '') {
     if(typeof num === 'string') {
@@ -56,4 +57,20 @@ export const parseDayToDDMMYYYY = ( day ) => {
     const year = day.getFullYear();
     return dayParsed + '-' + monthParsed + '-' + year
 
+}
+
+export const initVariables = (callback) => {
+  axios.get('http://localhost/loopita/data.php').then(response => {
+      if (!!response.data) {
+        const variables = {}
+        response.data.constants.forEach(constant => {
+          variables[constant.tag] = { description: constant.description, value: constant.constant }
+        });
+        response.data.labels.forEach(label => {
+          variables[label.tag] = { description: label.description, value: label.text }
+        })
+        console.log("setting editables");
+        callback(variables)
+      }
+    })
 }

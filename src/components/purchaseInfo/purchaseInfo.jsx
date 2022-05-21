@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Navigate } from 'react-router-dom';
+import axios from 'axios'
+import { setPurchaseInfo } from '../../actions/plan';
 import ButtonsWithMail from './buttonsWithMail';
 import BuyForm from './buyForm';
 
@@ -15,30 +17,66 @@ export class PurchaseInfo extends Component {
     }
   }
 
-  componentDidMount = () => {
-    /* full info data var fullData = getFullData();
-    if (!fullData.clientData.nameClient) {
-      this.setState({
-        redirect: true
-      })
-    }*/
-  }
-
   editPurchaseInfo = purchaseInfo => {
     this.setState({ purchaseConfirmationInfo: purchaseInfo })
+    this.props.setPurchaseInfo(purchaseInfo)
   }
 
   saveProgress = () => {
-    console.log("save progress");
-  }
 
+
+  }
+  setSubmitData = () => {
+    const {
+      screenSelected,
+      campaignName,
+      legal_name,
+      rfc,
+      fiscal_addres,
+      payment_mode,
+      promo_code,
+      monthlyPlan,
+      dailyPlan,
+      planType
+    } = this.props.fullData.planReducer
+    const {name, email, phone} = this.props.fullData.clientReducer
+    const data = {
+      screenSelected : {
+        name: screenSelected.name
+      },
+      clientData : {
+        nameClient : name,
+        email: email,
+        tel: phone,
+        camp: campaignName
+      },
+      purchaseInfo: {
+        razonSocial: legal_name,
+        rfc,
+        direccionFiscal: fiscal_addres,
+        tipoFactura: payment_mode,
+        codigoPomo: promo_code
+      },
+    }
+
+    if( planType === 'monthly'){
+      data['mensualPlan'] = {
+        id: monthlyPlan.id,
+        price: monthlyPlan.price,
+        name: monthlyPlan.name,
+
+      }
+    } else {
+      data['dailyPlan'] = {
+        selectedDays: dailyPlan
+      }
+    }
+    return data
+  }
   handleSubmit = () => {
-    /*
-    TODO: fix submit
     this.setState({ disableManually: true })
-    var fullData = getFullData();
-    var sumarizedData = { ...fullData, purchaseInfo: this.state.purchaseConfirmationInfo }
-    axios.post('https://loopita.impactovisual.info/api/contact/index.php', sumarizedData).then(response => {
+    const data = this.setSubmitData()
+    axios.post('https://loopita.impactovisual.info/api/contact/index.php', data).then(response => {
       if (response.data.sent) {
         alert('¡Pronto nos contactaremos contigo!')
         this.setState({ disableManually: true })
@@ -46,10 +84,11 @@ export class PurchaseInfo extends Component {
       } else {
         this.setState({ disableManually: true })
       }
-    })*/
+    })
   }
   render() {
     var { redirect, disableManually } = this.state
+    const {legal_name, rfc, fiscal_addres, payment_mode, promo_code} = this.props
     if (redirect) {
       return (<Navigate to="/" />)
     } else {
@@ -59,7 +98,13 @@ export class PurchaseInfo extends Component {
           <p className="buy__title">
             Confirmación de compra
           </p>
-          <BuyForm editPurchaseInfo={this.editPurchaseInfo} />
+          <BuyForm editPurchaseInfo={this.editPurchaseInfo}
+           legal_name={legal_name}
+           rfc={rfc}
+           fiscal_addres={fiscal_addres}
+           payment_mode={payment_mode}
+           promo_code={promo_code}
+          />
           <ButtonsWithMail
             firstName="Atrás"
             secondName="Siguiente"
@@ -77,9 +122,19 @@ export class PurchaseInfo extends Component {
 }
 
 const mapStateToProps = store => ({
+  legal_name: store.planReducer.legal_name,
+  rfc: store.planReducer.rfc,
+  fiscal_addres: store.planReducer.fiscal_addres,
+  payment_mode: store.planReducer.payment_mode,
+  promo_code: store.planReducer.promo_code,
+  fullData : store,
+  planType : store.planReducer.planType
 })
 
-const mapDispatchToProps = dispatch => ({
-})
+const mapDispatchToProps = dispatch => {
+  return {
+    setPurchaseInfo: data => { dispatch(setPurchaseInfo(data))}
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(PurchaseInfo)

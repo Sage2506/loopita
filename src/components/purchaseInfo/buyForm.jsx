@@ -4,12 +4,23 @@ export default class BuyForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            razonSocial: '',
+            legal_name: '',
             rfc: '',
-            direccionFiscal: '',
-            tipoFactura: 'Efectivo',
-            codigoPomo: ''
+            fiscal_addres: '',
+            payment_mode: 'Efectivo',
+            promo_code: ''
         }
+    }
+
+    componentDidMount = () => {
+        const {legal_name, rfc, fiscal_addres, payment_mode, promo_code} = this.props
+        this.setState({
+            legal_name,
+            rfc,
+            fiscal_addres,
+            payment_mode,
+            promo_code
+        })
     }
 
     handleInputChange = e => {
@@ -22,7 +33,7 @@ export default class BuyForm extends Component {
 
     render() {
         const { handleInputChange, state } = this
-        const { razonSocial, rfc, direccionFiscal, tipoFactura, codigoPomo } = state
+        const { legal_name, rfc, fiscal_addres, payment_mode, promo_code } = state
         return (
             <div className="buy__form">
                 <form>
@@ -31,9 +42,9 @@ export default class BuyForm extends Component {
                         <input
                             type="text"
                             className="form-control form-control-sm"
-                            name="razonSocial"
+                            name="legal_name"
                             onChange={handleInputChange}
-                            value={razonSocial}
+                            value={legal_name}
                         />
                     </div>
                     <div className="form-group">
@@ -50,15 +61,15 @@ export default class BuyForm extends Component {
                         <input
                             type="text"
                             className="form-control form-control-sm"
-                            name="direccionFiscal"
+                            name="fiscal_addres"
                             onChange={handleInputChange}
-                            value={direccionFiscal}
+                            value={fiscal_addres}
                         />
                     </div>
 
                     <div className="form-group ">
                         <label>Forma de pago</label>
-                        <select value={tipoFactura} className="form-control" name="tipoFactura" onChange={handleInputChange}>
+                        <select value={payment_mode || 'Efectivo'} className="form-control" name="payment_mode" onChange={handleInputChange}>
                             <option value={'Efectivo'}>Efectivo</option>
                             <option value={'Cheque'}>Cheque</option>
                             <option value={'Transferencia Electrónica de Fondos SPEI'}>Transferencia Electrónica de Fondos SPEI</option>
@@ -70,9 +81,9 @@ export default class BuyForm extends Component {
                         <input
                             type="text"
                             className="form-control form-control-sm"
-                            name="codigoPomo"
+                            name="promo_code"
                             onChange={handleInputChange}
-                            value={codigoPomo}
+                            value={promo_code}
                         />
                     </div>
                 </form>

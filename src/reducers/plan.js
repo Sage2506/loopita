@@ -1,4 +1,4 @@
-import { SET_CAMPAIGN_NAME, SET_DAILY_PLAN, SET_MONTHLY_PLAN } from "../actions/plan";
+import { SET_CAMPAIGN_NAME, SET_DAILY_PLAN, SET_MONTHLY_PLAN, SET_PURCHASE_INFO } from "../actions/plan";
 
 const initialPlan = {
   name: "",
@@ -8,7 +8,12 @@ const initialPlan = {
     price: 0
   },
   dailyPlan : [],
-  planType : ''
+  planType : '',
+  legal_name: '',
+  rfc: '',
+  fiscal_addres: '',
+  payment_mode: null,
+  promo_code: ''
 }
 
 export const planReducer = ( state = initialPlan, action) => {
@@ -19,6 +24,8 @@ export const planReducer = ( state = initialPlan, action) => {
       return {...state, monthlyPlan: action.data, planType: 'monthly'}
     case SET_DAILY_PLAN:
       return {...state, dailyPlan:action.data, planType: 'daily'}
+    case SET_PURCHASE_INFO:
+      return {...state, ...action.data}
     default:
       return state;
   }

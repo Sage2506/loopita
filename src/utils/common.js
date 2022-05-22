@@ -19,28 +19,38 @@ export const percentRounded = ( val = 0, percent = 100, decimals = 2) => {
   return result.toFixed(decimals)
 }
 
-export const calculateDailyServiceTotals = (dailyData) => {
-  const price = {
-    valueA: 50,
-    valueB: 75
-  }
+export const calculateDailyServiceTotals = (dailyData, peakRange, lowPrice = 50, highPrice = 75) => {
   let lowHours = 0, highHours = 0
+  const peakInit = peakRange.peakInit || 13;
+  const peakEnd = peakRange.peakEnd || 20;
   dailyData.forEach(dayConfig => {
     const { startHour, endHour } = dayConfig
     for(let i = startHour; i< endHour ; i++ ){
-        if( i <13 || i >= 20 ){
+        if( i < peakInit || i >= peakEnd ){
           lowHours++
         } else {
           highHours++
         }
     }
   });
-  const minTotal = lowHours * price.valueA, maxTotal = highHours * price.valueB
+  const minTotal = lowHours * lowPrice, maxTotal = highHours * highPrice
   const totalHours = lowHours + highHours;
   const total = maxTotal + minTotal
   return { total, minTotal, maxTotal, totalHours, lowHours, highHours }
 }
 
+export const parsePeakHourRange = range => {
+  if(!!range && range.length > 0){
+    return {
+      peakInit : parseInt(range.substr(0,2)),
+      peakEnd : parseInt(range.substr(6,2))
+    }
+  }
+  return {
+    peakInit : null,
+    peakEnd : null
+  }
+}
 export const parseDayToDDMMYYYY = ( day ) => {
   let dayParsed = day.getDate();
     if (dayParsed < 10) {
@@ -64,7 +74,7 @@ export const initVariables = (callback) => {
       if (!!response.data) {
         const variables = {}
         response.data.constants.forEach(constant => {
-          variables[constant.tag] = { description: constant.description, value: constant.constant }
+          variables[constant.tag] = { description: constant.description, value: parseFloat( constant.constant )}
         });
         response.data.labels.forEach(label => {
           variables[label.tag] = { description: label.description, value: label.text }

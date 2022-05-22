@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 export default class TimePickerDate extends Component {
   constructor(props) {
@@ -7,8 +8,8 @@ export default class TimePickerDate extends Component {
       stringDate: "",
       startHour: 7,
       endHour: 24,
-      earliestHour: 7,
-      latestHour: 24
+      earliestHour: this.props.minInitialHour || 7,
+      latestHour: this.props.maxEndingHour || 24
     }
   }
 
@@ -73,7 +74,6 @@ export default class TimePickerDate extends Component {
 
   changeTime = (newHour, hourToChange) => {
     this.setState({ [hourToChange]: newHour })
-    // store in reducer alterDateHours({ ...this.state, [hourToChange]: newHour })
     this.props.changeAddTime({ ...this.state, [hourToChange]: newHour })
   }
 
@@ -125,5 +125,3 @@ export default class TimePickerDate extends Component {
     );
   }
 }
-
-

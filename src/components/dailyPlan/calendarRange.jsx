@@ -57,8 +57,8 @@ export default class CalendarRange extends Component {
   createHourItem = (day) => {
     return {
       stringDate: parseDayToDDMMYYYY(day),
-      startHour: 7,
-      endHour: 24,
+      startHour: this.props.minInitialHour || 7,
+      endHour: this.props.maxEndingHour || 24,
       date: day
     }
   }
@@ -98,6 +98,8 @@ export default class CalendarRange extends Component {
                 amount={amount}
                 removeDate={this.removeDate}
                 changeAddTime={this.changeAddTime}
+                minInitialHour={this.props.minInitialHour}
+                maxEndingHour={this.props.maxEndingHour}
               />
             </li>
           ))}
@@ -112,7 +114,7 @@ export default class CalendarRange extends Component {
             secondName="Siguiente"
           />
         </div>
-        <TotalAmount amount={calculateDailyServiceTotals(addHoursList).total} />
+        <TotalAmount amount={calculateDailyServiceTotals(addHoursList, this.props.peakHourRange, this.props.normalHourPrice, this.props.peakHourPrice).total} />
       </div>
     );
   }

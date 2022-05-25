@@ -70,7 +70,7 @@ export const parseDayToDDMMYYYY = ( day ) => {
 }
 
 export const initVariables = (callback) => {
-  axios.get('http://localhost/loopita/data.php').then(response => {
+  axios.get('https://loopita.impactovisual.info/data.php').then(response => {
       if (!!response.data) {
         const variables = {}
         response.data.constants.forEach(constant => {

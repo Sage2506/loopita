@@ -26,6 +26,7 @@ export class PurchaseInfo extends Component {
 
 
   }
+
   setSubmitData = () => {
     const {
       screenSelected,
@@ -40,9 +41,10 @@ export class PurchaseInfo extends Component {
       planType
     } = this.props.fullData.planReducer
     const {name, email, phone} = this.props.fullData.clientReducer
+
     const data = {
       screenSelected : {
-        name: screenSelected.name
+        name: this.props.screenSelected.name
       },
       clientData : {
         nameClient : name,
@@ -132,8 +134,9 @@ const mapStateToProps = store => ({
   payment_mode: store.planReducer.payment_mode,
   promo_code: store.planReducer.promo_code,
   fullData : store,
+  screenSelected : store.planReducer.screenSelected,
   planType : store.planReducer.planType,
-  confirmMessage : store.editableReducer.confirmMessage
+  confirmMessage : store.editableReducer.variables.confirmMessage.value
 })
 
 const mapDispatchToProps = dispatch => {

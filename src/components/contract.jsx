@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setClient } from '../actions/client';
+import { setClient, setProgress } from '../actions/client';
 import { setEditable } from '../actions/editable';
 import { setCampaignName } from '../actions/plan';
 import { initVariables } from '../utils/common';
@@ -67,6 +67,7 @@ export class Contract extends Component {
     const { name, phone, email, camp, selectedScreen } = this.state
     this.props.setClient({ name, phone, email, progress : 1 })
     this.props.setCampaignName({ campaignName: camp, screen: selectedScreen })
+    this.props.setProgress(1);
   }
 
   isChecked = (e, value) => {
@@ -212,7 +213,8 @@ const mapDispatchToProps = dispatch => {
   return {
     setClient: data => { dispatch(setClient(data)) },
     setCampaignName: data => { dispatch(setCampaignName(data)) },
-    setEditables : data => { dispatch(setEditable(data))}
+    setEditables : data => { dispatch(setEditable(data))},
+    setProgress: data => { dispatch(setProgress(data))}
   }
 }
 

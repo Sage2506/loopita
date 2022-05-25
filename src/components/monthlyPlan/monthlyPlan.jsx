@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Navigate } from 'react-router-dom'
 import { setEditable } from '../../actions/editable';
 import { setMonthlyPlan } from '../../actions/plan';
 import { setProgress } from '../../actions/client';
@@ -22,45 +23,52 @@ export class MonthlyPlan extends Component {
   }
 
   render() {
-    const { monthlyPlan, setMonthlyPlan, monthlyPlanOnePrice, monthlyPlanTwoPrice, monthlyPlanThreePrice, monthlyPlanOneMultiplier, monthlyPlanTwoMultiplier, monthlyPlanThreeMultiplier } = this.props;
-    return (
-      <div>
-        <div className="container__plan-mensual" >
-          <div className="mensual_plan_dobule_section_grid">
-            <div>
-              <p className="title">¿Cuál es tu plan con Loopita?</p>
-              <p className="subtitle__plan-mensual">
-                Selecciona el propósito que buscas con Loopita
-              </p>
-              <MonthlyPlanCard
-                setMonthlyPlan={setMonthlyPlan}
-                monthlyPlan={monthlyPlan}
-                priceOne={monthlyPlanOnePrice}
-                priceTwo={monthlyPlanTwoPrice}
-                priceThree={monthlyPlanThreePrice}
-                multiplyerOne={monthlyPlanOneMultiplier}
-                multiplyerTwo={monthlyPlanTwoMultiplier}
-                multiplyerThree={monthlyPlanThreeMultiplier}
-              />
-              <div className="cont__plan-men">
-                <NavButtons
-                  saveProgress={this.saveProgress}
-                  goBack={true}
-                  firstLink="/contract"
-                  firstName="Atrás"
-                  secondLink="/stats_summary"
-                  secondName="Siguiente"
+    const { monthlyPlan, setMonthlyPlan, monthlyPlanOnePrice, monthlyPlanTwoPrice, monthlyPlanThreePrice, monthlyPlanOneMultiplier, monthlyPlanTwoMultiplier, monthlyPlanThreeMultiplier, progress } = this.props;
+    if ( this.props.progress < 1 ){
+      return (
+        <Navigate to="/contract" />
+      )
+    } else {
+
+      return (
+        <div>
+          <div className="container__plan-mensual" >
+            <div className="mensual_plan_dobule_section_grid">
+              <div>
+                <p className="title">¿Cuál es tu plan con Loopita?</p>
+                <p className="subtitle__plan-mensual">
+                  Selecciona el propósito que buscas con Loopita
+                </p>
+                <MonthlyPlanCard
+                  setMonthlyPlan={setMonthlyPlan}
+                  monthlyPlan={monthlyPlan}
+                  priceOne={monthlyPlanOnePrice}
+                  priceTwo={monthlyPlanTwoPrice}
+                  priceThree={monthlyPlanThreePrice}
+                  multiplyerOne={monthlyPlanOneMultiplier}
+                  multiplyerTwo={monthlyPlanTwoMultiplier}
+                  multiplyerThree={monthlyPlanThreeMultiplier}
                 />
+                <div className="cont__plan-men">
+                  <NavButtons
+                    saveProgress={this.saveProgress}
+                    goBack={true}
+                    firstLink="/contract"
+                    firstName="Atrás"
+                    secondLink="/stats_summary"
+                    secondName="Siguiente"
+                  />
+                </div>
               </div>
             </div>
           </div>
+          <TotalAmount
+            amount={monthlyPlan.price || 0}
+          />
         </div>
-        <TotalAmount
-          amount={monthlyPlan.price || 0}
-        />
-      </div>
-    );
-  }
+      );
+    }
+    }
 }
 
 const mapStateToProps = store => ({
@@ -72,6 +80,7 @@ const mapStateToProps = store => ({
   monthlyPlanOneMultiplier: store.editableReducer.variables.loopMultiplierOne?.value,
   monthlyPlanTwoMultiplier: store.editableReducer.variables.loopMultiplierTwo?.value,
   monthlyPlanThreeMultiplier: store.editableReducer.variables.loopMultiplierThree?.value,
+  progress : store.clientReducer.progress
 })
 
 const mapDispatchToProps = dispatch => {

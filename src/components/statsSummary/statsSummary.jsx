@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Navigate } from 'react-router-dom'
+import { setProgress } from '../../actions/client';
 import { calculateDailyServiceTotals, currencyFormat, parsePeakHourRange } from '../../utils/common';
 import NavButtons from '../common/navButtons';
 import DropFile from './dropFile';
@@ -81,9 +82,8 @@ export class StatsSummary extends Component {
     }
 
     statistics.totalCars = Math.round(this.state.carsPerHour / 18 / 60 * statistics.totalProjectTime)
-    const totalImpactEstimation = Math.round(statistics.totalCars * 1.5)
-    statistics.totalImpactEstimation = Math.round(totalImpactEstimation)
-    statistics.cpm = (statistics.total / totalImpactEstimation).toFixed(2)
+    statistics.totalImpactEstimation = Math.round(statistics.totalCars * 1.5)
+    statistics.cpm = (statistics.total / statistics.totalImpactEstimation).toFixed(2)
 
     this.setState({
       statistics
@@ -104,6 +104,7 @@ export class StatsSummary extends Component {
   }
 
   saveProgress = () => {
+    this.props.setProgress(4);
   }
 
   render() {
@@ -170,7 +171,7 @@ export class StatsSummary extends Component {
                   </tr>
                   <tr>
                     <td>Pantalla</td>
-                    <td>{screen ? screen.name : ''}</td>
+                    <td>{this.props.screen?.name || ''}</td>
                   </tr>
 
                   <tr>
@@ -280,10 +281,14 @@ const mapStateToProps = store => ({
   dailyPlan: store.planReducer.dailyPlan,
   monthlyPlan: store.planReducer.monthlyPlan,
   peakHourRange: store.editableReducer.variables.peakHourRange?.value,
+  screen : store.planReducer.screenSelected,
   progress: store.clientReducer.progress
 })
 
-const mapDispatchToProps = dispatch => ({
-})
+const mapDispatchToProps = dispatch => {
+  return {
+    setProgress : data => { dispatch(setProgress(data))}
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatsSummary)

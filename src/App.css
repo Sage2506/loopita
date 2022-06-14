@@ -620,3 +620,98 @@ video {
   content:" *";
   color: red;
 }
+
+.add-background {
+  border: solid black 1px;
+  background-image: url('./assets/img/billboard.png');
+
+}
+
+.add-container {
+  position: relative;
+  overflow: hidden;
+  min-height: 76%;
+  width: 100%;
+}
+
+.add-container .previewImg {
+  padding: 11% 0 0 11%;
+  width: 33.5%;
+}
+
+.add-container .background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+/* small desktop screens */
+@media (max-width: 1920px) {
+  .add-container {
+    position: relative;
+    overflow: hidden;
+    min-height: 76%;
+    width: 100%;
+  }
+
+  .add-container .previewImg {
+    padding: 11% 0 0 11%;
+    width: 33.5%;
+  }
+}
+/* big tablet screens */
+@media (max-width: 1280px) {
+  .add-container {
+    position: relative;
+    overflow: hidden;
+    min-height: 76%;
+    width: 100%;
+  }
+
+  .add-container .previewImg {
+    padding: 11% 0 0 11%;
+    width: 33.5%;
+  }
+}
+/* tablet screens */
+@media (max-width: 1024px) {
+  .add-container {
+    position: relative;
+    overflow: hidden;
+    min-height: 76%;
+    width: 100%;
+  }
+
+  .add-container .previewImg {
+    padding: 11% 0 0 11%;
+    width: 33.5%;
+  }
+}
+/* big mobile screens */
+@media (max-width: 768px) {
+  .add-container {
+    position: relative;
+    overflow: hidden;
+    height: 330px;
+    width: 100%;
+  }
+
+  .add-container .previewImg {
+    padding: 11% 0 0 11%;
+    width: 33.5%;
+  }
+}
+/* small mobile screens */
+@media (max-width: 480px) {
+  .add-container {
+    position: relative;
+    overflow: hidden;
+    height: 330px;
+    width: 100%;
+  }
+
+  .add-container .previewImg {
+    padding: 11% 0 0 11%;
+    width: 33.5%;
+  }
+}

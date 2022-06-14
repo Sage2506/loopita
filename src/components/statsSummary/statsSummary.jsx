@@ -5,6 +5,7 @@ import { setProgress } from '../../actions/client';
 import { calculateDailyServiceTotals, currencyFormat, parsePeakHourRange } from '../../utils/common';
 import NavButtons from '../common/navButtons';
 import DropFile from './dropFile';
+import addBackground from './../../assets/img/billboard.png'
 
 export class StatsSummary extends Component {
   constructor(props) {
@@ -157,7 +158,10 @@ export class StatsSummary extends Component {
                 </div>
               }
               {file && fileExtension !== "" && imageFormats.includes(fileExtension) &&
-                <img className="previewImg" src={URL.createObjectURL(file)} alt="addPreview" />
+                <div className='add-container'>
+                  <img className="previewImg" src={URL.createObjectURL(file)} alt="addPreview" />
+                  <img className='background' src={addBackground} alt="add background" />
+                  </div>
               }
             </div>
           </div>

@@ -28,6 +28,11 @@ export default class CalendarRange extends Component {
 
   componentDidMount() {
     const { dailyPlan } = this.props
+    console.log('dailyPlan',dailyPlan);
+    if( dailyPlan.length === 0){
+      const initialItem = this.createHourItem(new Date)
+      dailyPlan.push(initialItem)
+    }
     this.setState({
       selectedDays: dailyPlan.map(dailyItem => dailyItem.date),
       addHoursList: dailyPlan

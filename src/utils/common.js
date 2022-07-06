@@ -33,7 +33,7 @@ export const calculateDailyServiceTotals = (dailyData, peakRange, lowPrice = 50,
         }
     }
   });
-  const minTotal = lowHours * lowPrice, maxTotal = highHours * highPrice
+  const minTotal = lowHours * (lowPrice * 60 / 5), maxTotal = highHours * (highPrice * 60 / 5)
   const totalHours = lowHours + highHours;
   const total = maxTotal + minTotal
   return { total, minTotal, maxTotal, totalHours, lowHours, highHours }

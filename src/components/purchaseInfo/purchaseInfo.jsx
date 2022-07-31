@@ -29,7 +29,6 @@ export class PurchaseInfo extends Component {
 
   setSubmitData = () => {
     const {
-      screenSelected,
       campaignName,
       legal_name,
       rfc,
@@ -98,7 +97,6 @@ export class PurchaseInfo extends Component {
     if (redirect) {
       return (<Navigate to="/" />)
     } else {
-      const { purchaseConfirmationInfo } = this.state
       return (
         <div className="container">
           <p className="buy__title">

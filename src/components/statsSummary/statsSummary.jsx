@@ -75,7 +75,7 @@ export class StatsSummary extends Component {
       statistics.totalProjectTime = 18 * 10 * 20 / 60 * 30;
       statistics.totalCars = Math.round(this.state.carsPerHour / 18 / 60 * statistics.totalProjectTime)
     } else {
-      const { total, minTotal, maxTotal, totalHours, totalSpots, timesShowing, lowHours, highHours } = calculateDailyServiceTotals(dailyPlan, parsePeakHourRange(peakHourRange), this.props.normalHourPrice, this.props.peakHourPrice, this.props.loopDuration)
+      const { total, totalHours, totalSpots, timesShowing, lowHours, highHours } = calculateDailyServiceTotals(dailyPlan, parsePeakHourRange(peakHourRange), this.props.normalHourPrice, this.props.peakHourPrice, this.props.loopDuration)
       statistics.total = total;
       statistics.peakHour = lowHours * timesShowing;
       statistics.noPeakHour = highHours * timesShowing;

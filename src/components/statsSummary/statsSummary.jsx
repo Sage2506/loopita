@@ -43,11 +43,11 @@ export class StatsSummary extends Component {
       ],
       ageRanks: [
         { label: '0-14', percentage: 16 },
-        { label: '15-19', percentage: 15 },
-        { label: '20-29', percentage: 14 },
-        { label: '30-44', percentage: 22 },
+        { label: '15-19', percentage: 10},
+        { label: '20-29', percentage: 21 },
+        { label: '30-44', percentage: 25 },
         { label: '45-54', percentage: 18 },
-        { label: 'Más de 55', percentage: 15 },
+        { label: 'Más de 55', percentage: 10 },
       ]
 
     }
@@ -73,16 +73,18 @@ export class StatsSummary extends Component {
       statistics.noPeakHour = Math.round(statistics.total * 2 / 5 / 10 / monthlyPlan.loopMultipliyer)
       statistics.totalSpots = Math.round(statistics.total / 10 / monthlyPlan.loopMultipliyer)
       statistics.totalProjectTime = 18 * 10 * 20 / 60 * 30;
+      statistics.totalCars = Math.round(this.state.carsPerHour / 18 / 60 * statistics.totalProjectTime)
     } else {
-      const { total, minTotal, maxTotal, totalHours } = calculateDailyServiceTotals(dailyPlan, parsePeakHourRange(peakHourRange))
+      const { total, minTotal, maxTotal, totalHours, totalSpots, timesShowing, lowHours, highHours } = calculateDailyServiceTotals(dailyPlan, parsePeakHourRange(peakHourRange), this.props.normalHourPrice, this.props.peakHourPrice, this.props.loopDuration)
       statistics.total = total;
-      statistics.peakHour = maxTotal / 10;
-      statistics.noPeakHour = minTotal / 10;
-      statistics.totalSpots = totalHours * 10
-      statistics.totalProjectTime = (totalHours * 10 * 20 / 60).toFixed(2)
+      statistics.peakHour = lowHours * timesShowing;
+      statistics.noPeakHour = highHours * timesShowing;
+      statistics.totalSpots = totalSpots
+      statistics.totalProjectTime = (totalHours * timesShowing * 20 / 60).toFixed(2)
+      statistics.totalCars = Math.round( ((this.props.carsOnNormal * lowHours) + (this.props.carsOnPeak * highHours)) / timesShowing )
     }
 
-    statistics.totalCars = Math.round(this.state.carsPerHour / 18 / 60 * statistics.totalProjectTime)
+
     statistics.totalImpactEstimation = Math.round(statistics.totalCars * 1.5)
     statistics.cpm = (statistics.total / statistics.totalImpactEstimation).toFixed(2)
 
@@ -123,7 +125,7 @@ export class StatsSummary extends Component {
       const {
         file,
         statistics,
-        screen,
+
         fileExtension,
         videoFormats,
         imageFormats
@@ -140,7 +142,7 @@ export class StatsSummary extends Component {
       } = statistics
 
       return (
-        <div className="Drop__file">
+        <div className="container">
           <div className="dobule_section_grid">
             <div>
               <p className="title__video">¿Como te van a recordar?</p>
@@ -286,7 +288,12 @@ const mapStateToProps = store => ({
   monthlyPlan: store.planReducer.monthlyPlan,
   peakHourRange: store.editableReducer.variables.peakHourRange?.value,
   screen : store.planReducer.screenSelected,
-  progress: store.clientReducer.progress
+  progress: store.clientReducer.progress,
+  carsOnNormal : store.editableReducer.variables.carsOnNormal.value,
+  carsOnPeak : store.editableReducer.variables.carsOnPeak.value,
+  normalHourPrice : store.editableReducer.variables.normalHourSpotPrice?.value,
+  peakHourPrice : store.editableReducer.variables.peakHourSpotPrice?.value,
+  loopDuration : store.editableReducer.variables.loopDuration?.value,
 })
 
 const mapDispatchToProps = dispatch => {

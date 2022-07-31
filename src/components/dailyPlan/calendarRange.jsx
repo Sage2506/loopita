@@ -28,9 +28,8 @@ export default class CalendarRange extends Component {
 
   componentDidMount() {
     const { dailyPlan } = this.props
-    console.log('dailyPlan',dailyPlan);
     if( dailyPlan.length === 0){
-      const initialItem = this.createHourItem(new Date)
+      const initialItem = this.createHourItem(new Date());
       dailyPlan.push(initialItem)
     }
     this.setState({
@@ -81,7 +80,7 @@ export default class CalendarRange extends Component {
   }
 
   render() {
-    const { selectedDays, dateTimeItems, price, amount, total, addHoursList } = this.state
+    const { selectedDays, dateTimeItems, price, amount, addHoursList } = this.state
     return (
       <div>
         <div className="container__calendar">
@@ -119,7 +118,7 @@ export default class CalendarRange extends Component {
             secondName="Siguiente"
           />
         </div>
-        <TotalAmount amount={calculateDailyServiceTotals(addHoursList, this.props.peakHourRange, this.props.normalHourPrice, this.props.peakHourPrice).total} />
+        <TotalAmount amount={calculateDailyServiceTotals(addHoursList, this.props.peakHourRange, this.props.normalHourPrice, this.props.peakHourPrice, this.props.loopDuration).total} />
       </div>
     );
   }

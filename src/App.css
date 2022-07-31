@@ -50,6 +50,11 @@
   background-color: #037cf5;
 }
 
+.container{
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
 .nav__bar {
   background: var(--primary);
   padding: 2rem;
@@ -274,8 +279,7 @@
 @media screen and (min-width: 768px) {
 
   .data__contrat-cont .bx__btn-next {
-    display: flex;
-    justify-content: end;
+    display: flex-end;
   }
 
   .data__contrat-cont .bx__btn-next {
@@ -366,7 +370,7 @@ label {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  padding: 2rem 0;
 }
 
 .date__range-cont {

@@ -28,7 +28,7 @@ export class DailyPlan extends Component {
       )
     } else {
       return (
-        <div>
+        <div className='container'>
           <div className="title__time">
             <p className="title">
               Plan por día
@@ -49,6 +49,7 @@ export class DailyPlan extends Component {
               peakHourRange={parsePeakHourRange (this.props.peakHourRange)}
               normalHourPrice={this.props.normalHourPrice}
               peakHourPrice={this.props.peakHourPrice}
+              loopDuration={this.props.loopDuration}
             />
           </div>
         </div>
@@ -65,6 +66,7 @@ const mapStateToProps = store => ({
   peakHourRange : store.editableReducer.variables.peakHourRange?.value,
   normalHourPrice : store.editableReducer.variables.normalHourSpotPrice?.value,
   peakHourPrice : store.editableReducer.variables.peakHourSpotPrice?.value,
+  loopDuration : store.editableReducer.variables.loopDuration?.value,
   progress : store.clientReducer.progress
 })
 

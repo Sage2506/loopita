@@ -100,7 +100,7 @@ export class PurchaseInfo extends Component {
     } else {
       const { purchaseConfirmationInfo } = this.state
       return (
-        <div className="buy__confirm">
+        <div className="container">
           <p className="buy__title">
             Confirmación de compra
           </p>

@@ -88,7 +88,7 @@ export class Contract extends Component {
     const { name, email, phone, camp, selectedScreen } = this.state
     const { loaded, homeInputFourLabel } = this.props
     return (
-      <div className="data__contrat-cont">
+      <div className="container">
         <div className="grid__contrat">
           <div>
             <div>

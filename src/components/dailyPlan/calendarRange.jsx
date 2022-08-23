@@ -28,8 +28,8 @@ export default class CalendarRange extends Component {
 
   componentDidMount() {
     const { dailyPlan } = this.props
-    if( dailyPlan.length === 0){
-      const initialItem = this.createHourItem(new Date());
+    if (dailyPlan.length === 0) {
+      const initialItem = this.createHourItem(new Date())
       dailyPlan.push(initialItem)
     }
     this.setState({
@@ -43,6 +43,7 @@ export default class CalendarRange extends Component {
   }
 
   changeAddTime = (addHourData) => {
+
     const itemIndex = this.state.addHoursList.findIndex(selectedAddHourItem => selectedAddHourItem.stringDate === addHourData.stringDate)
     const newAddHoursList = this.state.addHoursList.concat()
     newAddHoursList[itemIndex] = addHourData
@@ -52,10 +53,22 @@ export default class CalendarRange extends Component {
   }
 
   setDays = (days) => {
-    this.setState({
-      selectedDays: days,
-      addHoursList: days.map(this.createHourItem)
-    })
+    if (this.state.addHoursList.length < days.length) {
+      days.forEach(day => {
+        if (!this.state.addHoursList.map(hour => hour.day).includes(day)) {
+          this.setState({
+            addHoursList: this.state.addHoursList.concat(this.createHourItem(day)),
+            selectedDays: days
+          })
+        }
+      });
+    } else {
+      this.state.addHoursList.forEach(hourList => {
+        if (!days.includes(hourList.date)) {
+          this.removeDate(hourList)
+        }
+      });
+    }
   }
 
   createHourItem = (day) => {
@@ -68,19 +81,39 @@ export default class CalendarRange extends Component {
   }
 
   removeDate = (date) => {
-    const selectedDate = format(date.date,'P');
+    const selectedDate = format(date.date, 'P');
+
+    const newHoursList = []
+    this.state.addHoursList.forEach(hourItem => {
+      if (format(hourItem.date, 'P') !== selectedDate) {
+        newHoursList.push(hourItem)
+      }
+    })
+
+    const newDays = []
+    this.state.selectedDays.forEach(day => {
+      if (format(day, 'P') !== selectedDate) {
+        newDays.push(day)
+      }
+    })
     this.setState({
-      selectedDays : this.state.selectedDays.filter( item => format(item,'P') !== selectedDate),
-      addHoursList : this.state.addHoursList.filter( item => format(item.date,'P') !== selectedDate)
+      addHoursList: [],//newHoursList,
+      selectedDays: []
+    })
+    this.setState({
+      addHoursList: newHoursList,
+      selectedDays: newDays
     })
   }
+
 
   compareDays = (dayOne, dayTwo) => {
     return parseDayToDDMMYYYY(dayOne) === parseDayToDDMMYYYY(dayTwo)
   }
 
   render() {
-    const { selectedDays, dateTimeItems, price, amount, addHoursList } = this.state
+    const { selectedDays, dateTimeItems, price, amount, total, addHoursList } = this.state
+
     return (
       <div>
         <div className="container__calendar">

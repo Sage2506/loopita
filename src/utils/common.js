@@ -83,5 +83,17 @@ export const initVariables = (callback) => {
       })
       callback(variables)
     }
-  })
+  }).catch((error) => {
+
+    const response = { "constants": [{ "constant": "2500", "description": "Cantidad de autos en hora normal", "tag": "carsOnNormal" }, { "constant": "3500", "description": "Cantidad de autos en hora pico", "tag": "carsOnPeak" }, { "constant": "300", "description": "Duracion del loop publicitario( en segundos)", "tag": "loopDuration" }, { "constant": "7", "description": "Hora a la que inicia la pantalla a operar(formato de 24)", "tag": "minInitialHour" }, { "constant": "24", "description": "Hora a la que termina la pantalla (formato 24)", "tag": "maxEndHour" }, { "constant": "3.5", "description": "Costo del spot en hora normal", "tag": "normalHourSpotPrice" }, { "constant": "5", "description": "Costo del spot en hora pico", "tag": "peakHourSpotPrice" }, { "constant": "20000", "description": "Costo del plan mensual 1", "tag": "monthlyPlanOne" }, { "constant": "30000", "description": "Costo del plan mensual 2", "tag": "monthlyPlanTwo" }, { "constant": "40000", "description": "Costo del plan mensual 3", "tag": "monthlyPlanThree" }, { "constant": "1", "description": "Multiplicador del loop del mes 1", "tag": "loopMultiplierOne" }, { "constant": "2", "description": "Multiplicador del loop del mes 2", "tag": "loopMultiplierTwo" }, { "constant": "3", "description": "Multiplicador del loop del mes 3", "tag": "loopMultiplierThree" }], "labels": [{ "text": "Solicitud enviada. Nos contactaremos contigo antes de 24 horas al telefono proporcionado. Si gustas contactarete con nosotros: (664 )331-6786", "description": "Texto para confirmacion de solicitud de compra", "tag": "confirmMessage" }, { "text": "Empresa", "description": "El texto que va sobre el cuarto input de la segunda pantalla", "tag": "homeInputFourLabel" }, { "text": "14:00-18:00", "description": "rango de horas piko (formato 00:00-24:00)", "tag": "peakHourRange" }] }
+    const variables = {}
+    response.constants.forEach(constant => {
+      variables[constant.tag] = { description: constant.description, value: parseFloat(constant.constant) }
+    });
+    response.labels.forEach(label => {
+      variables[label.tag] = { description: label.description, value: label.text }
+    })
+    callback(variables)
+  }
+  )
 }

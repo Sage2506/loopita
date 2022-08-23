@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Navigate} from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setEditable } from '../../actions/editable';
 import { setProgress } from '../../actions/client';
@@ -10,8 +10,8 @@ import CalendarRange from './calendarRange';
 
 export class DailyPlan extends Component {
 
-  componentDidMount(){
-    if(!this.props.loaded){
+  componentDidMount() {
+    if (!this.props.loaded) {
       initVariables(this.props.setEditables)
     }
   }
@@ -22,7 +22,7 @@ export class DailyPlan extends Component {
 
 
   render() {
-    if ( this.props.progress < 1 ){
+    if (this.props.progress < 1) {
       return (
         <Navigate to="/contract" />
       )
@@ -46,7 +46,7 @@ export class DailyPlan extends Component {
               saveProgress={this.saveProgress}
               minInitialHour={this.props.minInitialHour}
               maxEndingHour={this.props.maxEndingHour}
-              peakHourRange={parsePeakHourRange (this.props.peakHourRange)}
+              peakHourRange={parsePeakHourRange(this.props.peakHourRange)}
               normalHourPrice={this.props.normalHourPrice}
               peakHourPrice={this.props.peakHourPrice}
               loopDuration={this.props.loopDuration}
@@ -55,7 +55,7 @@ export class DailyPlan extends Component {
         </div>
       );
     }
-    }
+  }
 }
 
 const mapStateToProps = store => ({
@@ -74,7 +74,7 @@ const mapDispatchToProps = dispatch => {
   return {
     setDailyPlan: data => { dispatch(setDailyPlan(data)) },
     setEditables: data => { dispatch(setEditable(data)) },
-    setProgress: data => { dispatch( setProgress (data))}
+    setProgress: data => { dispatch(setProgress(data)) }
   }
 }
 

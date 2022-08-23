@@ -5,7 +5,6 @@ export default class TimePickerDate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stringDate: "",
       startHour: 7,
       endHour: 24,
       earliestHour: this.props.minInitialHour || 7,
@@ -14,6 +13,7 @@ export default class TimePickerDate extends Component {
   }
 
   componentDidMount = () => {
+
     this.setState(this.props.getDate)
   }
 
@@ -83,10 +83,10 @@ export default class TimePickerDate extends Component {
 
   render() {
     const { startTimeDown, startTimeUp, endTimeDown, endTimeUp, state } = this
-    const { stringDate, startHour, endHour } = state
+    const { startHour, endHour } = state
     return (
       <div>
-        {stringDate} <button className='icon-button' onClick={this.removeDate}><i className="fas fa-trash"></i></button>
+        {this.props.getDate.stringDate} <button className='icon-button' onClick={this.removeDate}><i className="fas fa-trash"></i></button>
         <div className="display-columns-wrapp">
           <div>
             Hora inicio:

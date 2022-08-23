@@ -82,27 +82,9 @@ export default class CalendarRange extends Component {
 
   removeDate = (date) => {
     const selectedDate = format(date.date, 'P');
-
-    const newHoursList = []
-    this.state.addHoursList.forEach(hourItem => {
-      if (format(hourItem.date, 'P') !== selectedDate) {
-        newHoursList.push(hourItem)
-      }
-    })
-
-    const newDays = []
-    this.state.selectedDays.forEach(day => {
-      if (format(day, 'P') !== selectedDate) {
-        newDays.push(day)
-      }
-    })
     this.setState({
-      addHoursList: [],//newHoursList,
-      selectedDays: []
-    })
-    this.setState({
-      addHoursList: newHoursList,
-      selectedDays: newDays
+      selectedDays: this.state.selectedDays.filter(day => format(day, 'P') !== selectedDate),
+      addHoursList: this.state.addHoursList.filter(hour => format(hour.date, 'P') !== selectedDate),
     })
   }
 
@@ -151,7 +133,7 @@ export default class CalendarRange extends Component {
             secondName="Siguiente"
           />
         </div>
-        <TotalAmount amount={calculateDailyServiceTotals(addHoursList, this.props.peakHourRange, this.props.normalHourPrice, this.props.peakHourPrice, this.props.loopDuration).total} />
+        <TotalAmount amount={calculateDailyServiceTotals(addHoursList, this.props.peakHourRange, this.props.normalHourPrice, this.props.peakHourPrice).total} />
       </div>
     );
   }

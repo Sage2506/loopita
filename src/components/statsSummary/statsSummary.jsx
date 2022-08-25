@@ -71,7 +71,7 @@ export class StatsSummary extends Component {
       statistics.total = monthlyPlan.price
       statistics.peakHour = Math.round(statistics.total * 3 / 5 / 10 / monthlyPlan.loopMultipliyer)
       statistics.noPeakHour = Math.round(statistics.total * 2 / 5 / 10 / monthlyPlan.loopMultipliyer)
-      statistics.totalSpots = Math.round(statistics.total / 10 / monthlyPlan.loopMultipliyer)
+      statistics.totalSpots = 3600/this.props.loopDuration * 17 * 30 * monthlyPlan.loopMultipliyer
       statistics.totalProjectTime = 18 * 10 * 20 / 60 * 30;
       statistics.totalCars = Math.round(this.state.carsPerHour / 18 / 60 * statistics.totalProjectTime)
     } else {
@@ -258,7 +258,7 @@ export class StatsSummary extends Component {
               <table className="table table-striped">
                 <tbody>
                   <tr>
-                    <td>Presupuesto proyectado</td>
+                    <td>Presupuesto proyectado {total} </td>
                     <td>{currencyFormat(total)}</td>
                   </tr>
                 </tbody>

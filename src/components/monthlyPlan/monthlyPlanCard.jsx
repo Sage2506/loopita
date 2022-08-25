@@ -2,9 +2,6 @@ import React,{ Component } from 'react';
 import { connect } from 'react-redux';
 import { currencyFormat } from '../../utils/common';
 
-
-const actualSelectedPlan = { id : 1}
-
 const numbers = ['One','Two', 'Three'];
 
 export class MonthlyPlanCard extends Component {
@@ -30,7 +27,7 @@ export class MonthlyPlanCard extends Component {
       name: 'Que me recuerden con Loopita',
       titleHead: 'Selecciona tu paquete de preferencia.',
       title: 'PaqueTe Vean',
-      price: 25000.00,
+      price: this.props[`price${numbers[1]}`] || 25000.00,
       descripcion: 'Con Loopita trabaja el posicionamiento  en grande de tu marca. Plan mensual fijo en que aparecerás dos veces por loop en nuestra pantalla.',
       state: false,
       loopMultipliyer: this.props[`multiplyerOne${numbers[1]}`] || 2

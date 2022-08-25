@@ -10,6 +10,7 @@ const listScreenT = [
   {
     id: 1,
     name: 'Pantalla Zona dorada, Rio Tijuana',
+    link:'https://www.impactovisual.info/medio.php?id=240',
     title: '1 hora',
     service: '12 pm',
     state: false,
@@ -168,7 +169,7 @@ export class Contract extends Component {
                         checked={selectedScreen !== null && selectedScreen.id === el.id}
                       />
                     </td>
-                    <td>{el.name}</td>
+                    <td> <a href={el.link}>{el.name}</a> </td>
                     <td>{el.avgViewers}</td>
                     <td>{el.maxPoint}</td>
                   </tr>

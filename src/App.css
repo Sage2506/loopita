@@ -655,6 +655,14 @@ video {
   color: red;
 }
 
+.overview-button {
+  z-index: 1000000;
+  position: fixed;
+  bottom: 28%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 /* 2k desktop screens */
 @media (max-width: 2560px) {
   .add-container {
@@ -673,6 +681,10 @@ video {
     max-width: 150px;
     position: absolute;
     bottom: 8%;
+  }
+
+  .overview-button {
+    bottom: 27%;
   }
 }
 
@@ -695,6 +707,10 @@ video {
     position: absolute;
     bottom: 1%;
   }
+
+  .overview-button {
+    bottom: 18%;
+  }
 }
 
 /* big tablet screens */
@@ -715,6 +731,10 @@ video {
     max-width: 150px;
     position: absolute;
     bottom: 6%;
+  }
+
+  .overview-button {
+    bottom: 5%;
   }
 }
 

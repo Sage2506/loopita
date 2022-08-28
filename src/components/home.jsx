@@ -29,6 +29,14 @@ export class Home extends Component {
           autoplay: 1,
           mute: 1
         }} />
+        {this.state.isOpen &&
+          <Link to="/contract" className='overview-button'>
+            <button
+              className="btn btn-primary btn-home "
+            >Contratar
+            </button>
+          </Link>
+        }
         <div className="cover__page">
           <div className="grid_double">
             <div style={{ textAlign: "center" }} >

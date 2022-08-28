@@ -31,7 +31,7 @@ export default class DropFile extends Component {
   }
 
   render (  ) {
-    const { changeFile, saveFile, saveChanges, state } = this
+    const { changeFile, saveFile, state } = this
     const { file, fileExtension, imageFormats, videoFormats } = state
     return(
       <div>

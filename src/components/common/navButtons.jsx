@@ -77,7 +77,7 @@ export class NavButtons extends Component {
         {firstLinkValidate && disabledBtn && firstLink && <button
           onClick={saveProgress}
           className={`btn btn-primary btn-sm`}
-           >
+        >
           {firstName}
           {firstSubText !== undefined && firstSubText.length > 0 && (
             <span className="btn-sub-text">
@@ -89,7 +89,7 @@ export class NavButtons extends Component {
         {secondLinkValidate && disabledBtn && secondLink && <button
           onClick={saveProgress}
           className={`btn btn-primary btn-sm`}
-           >
+        >
           {secondName}
           {secondSubText !== undefined && secondSubText.length > 0 && (
             <span className="btn-sub-text">

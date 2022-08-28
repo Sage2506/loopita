@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 export default class TimePickerDate extends Component {
   constructor(props) {

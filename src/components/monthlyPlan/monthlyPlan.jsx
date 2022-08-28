@@ -23,8 +23,8 @@ export class MonthlyPlan extends Component {
   }
 
   render() {
-    const { monthlyPlan, setMonthlyPlan, monthlyPlanOnePrice, monthlyPlanTwoPrice, monthlyPlanThreePrice, monthlyPlanOneMultiplier, monthlyPlanTwoMultiplier, monthlyPlanThreeMultiplier, progress } = this.props;
-    if ( this.props.progress < 1 ){
+    const { monthlyPlan, setMonthlyPlan, monthlyPlanOnePrice, monthlyPlanTwoPrice, monthlyPlanThreePrice, monthlyPlanOneMultiplier, monthlyPlanTwoMultiplier, monthlyPlanThreeMultiplier } = this.props;
+    if (this.props.progress < 1) {
       return (
         <Navigate to="/contract" />
       )
@@ -68,7 +68,7 @@ export class MonthlyPlan extends Component {
         </div>
       );
     }
-    }
+  }
 }
 
 const mapStateToProps = store => ({
@@ -80,14 +80,14 @@ const mapStateToProps = store => ({
   monthlyPlanOneMultiplier: store.editableReducer.variables.loopMultiplierOne?.value,
   monthlyPlanTwoMultiplier: store.editableReducer.variables.loopMultiplierTwo?.value,
   monthlyPlanThreeMultiplier: store.editableReducer.variables.loopMultiplierThree?.value,
-  progress : store.clientReducer.progress
+  progress: store.clientReducer.progress
 })
 
 const mapDispatchToProps = dispatch => {
   return {
     setMonthlyPlan: data => { dispatch(setMonthlyPlan(data)) },
     setEditables: data => { dispatch(setEditable(data)) },
-    setProgress: data => { dispatch(setProgress(data))}
+    setProgress: data => { dispatch(setProgress(data)) }
   }
 }
 

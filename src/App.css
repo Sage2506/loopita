@@ -50,7 +50,7 @@
   background-color: #037cf5;
 }
 
-.container{
+.container {
   padding-top: 2em;
   padding-bottom: 2em;
 }
@@ -615,13 +615,13 @@ video {
   border: none;
 }
 
-.icon-button:hover{
+.icon-button:hover {
   background: red;
   color: white;
 }
 
 .required:after {
-  content:" *";
+  content: " *";
   color: red;
 }
 
@@ -649,6 +649,33 @@ video {
   left: 0;
   width: 100%;
 }
+
+.errorMessage {
+  font-weight: bold;
+  color: red;
+}
+
+/* 2k desktop screens */
+@media (max-width: 2560px) {
+  .add-container {
+    position: relative;
+    overflow: hidden;
+    min-height: 76%;
+    width: 100%;
+  }
+
+  .add-container .previewImg {
+    padding: 11% 0 0 11%;
+    width: 33.5%;
+  }
+
+  .home-button-position {
+    max-width: 150px;
+    position: absolute;
+    bottom: 8%;
+  }
+}
+
 /* small desktop screens */
 @media (max-width: 1920px) {
   .add-container {
@@ -662,7 +689,14 @@ video {
     padding: 11% 0 0 11%;
     width: 33.5%;
   }
+
+  .home-button-position {
+    max-width: 150px;
+    position: absolute;
+    bottom: 1%;
+  }
 }
+
 /* big tablet screens */
 @media (max-width: 1280px) {
   .add-container {
@@ -676,7 +710,14 @@ video {
     padding: 11% 0 0 11%;
     width: 33.5%;
   }
+
+  .home-button-position {
+    max-width: 150px;
+    position: absolute;
+    bottom: 6%;
+  }
 }
+
 /* tablet screens */
 @media (max-width: 1024px) {
   .add-container {
@@ -690,7 +731,14 @@ video {
     padding: 11% 0 0 11%;
     width: 33.5%;
   }
+
+  .home-button-position {
+    max-width: 150px;
+    position: absolute;
+    bottom: 16%;
+  }
 }
+
 /* big mobile screens */
 @media (max-width: 768px) {
   .add-container {
@@ -704,7 +752,14 @@ video {
     padding: 11% 0 0 11%;
     width: 33.5%;
   }
+
+  .home-button-position {
+    max-width: 150px;
+    position: absolute;
+    bottom: 52%;
+  }
 }
+
 /* small mobile screens */
 @media (max-width: 480px) {
   .add-container {
@@ -717,5 +772,15 @@ video {
   .add-container .previewImg {
     padding: 11% 0 0 11%;
     width: 33.5%;
+  }
+
+  .home-button-position {
+    max-width: 150px;
+    position: absolute;
+    bottom: 12%;
+  }
+
+  .contratar__mobil__a {
+    bottom: 40%;
   }
 }

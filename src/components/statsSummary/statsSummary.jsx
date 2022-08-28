@@ -43,7 +43,7 @@ export class StatsSummary extends Component {
       ],
       ageRanks: [
         { label: '0-14', percentage: 16 },
-        { label: '15-19', percentage: 10},
+        { label: '15-19', percentage: 10 },
         { label: '20-29', percentage: 21 },
         { label: '30-44', percentage: 25 },
         { label: '45-54', percentage: 18 },
@@ -71,7 +71,7 @@ export class StatsSummary extends Component {
       statistics.total = monthlyPlan.price
       statistics.peakHour = Math.round(statistics.total * 3 / 5 / 10 / monthlyPlan.loopMultipliyer)
       statistics.noPeakHour = Math.round(statistics.total * 2 / 5 / 10 / monthlyPlan.loopMultipliyer)
-      statistics.totalSpots = 3600/this.props.loopDuration * 17 * 30 * monthlyPlan.loopMultipliyer
+      statistics.totalSpots = 3600 / this.props.loopDuration * 17 * 30 * monthlyPlan.loopMultipliyer
       statistics.totalProjectTime = 18 * 10 * 20 / 60 * 30;
       statistics.totalCars = Math.round(this.state.carsPerHour / 18 / 60 * statistics.totalProjectTime)
     } else {
@@ -81,7 +81,7 @@ export class StatsSummary extends Component {
       statistics.noPeakHour = highHours * timesShowing;
       statistics.totalSpots = totalSpots
       statistics.totalProjectTime = (totalHours * timesShowing * 20 / 60).toFixed(2)
-      statistics.totalCars = Math.round( ((this.props.carsOnNormal * lowHours) + (this.props.carsOnPeak * highHours)) / timesShowing )
+      statistics.totalCars = Math.round(((this.props.carsOnNormal * lowHours) + (this.props.carsOnPeak * highHours)) / timesShowing)
     }
 
 
@@ -154,7 +154,7 @@ export class StatsSummary extends Component {
               <p>Especificaciones del anuncio</p>
               {file && fileExtension !== "" && videoFormats.includes(fileExtension) &&
                 <div>
-                  <video controls id="videoPreview" >
+                  <video controls id="videoPreview" autoPlay={true}>
                     <source src={URL.createObjectURL(file)} />
                   </video>
                 </div>
@@ -163,7 +163,7 @@ export class StatsSummary extends Component {
                 <div className='add-container'>
                   <img className="previewImg" src={URL.createObjectURL(file)} alt="addPreview" />
                   <img className='background' src={addBackground} alt="add background" />
-                  </div>
+                </div>
               }
             </div>
           </div>
@@ -287,18 +287,18 @@ const mapStateToProps = store => ({
   dailyPlan: store.planReducer.dailyPlan,
   monthlyPlan: store.planReducer.monthlyPlan,
   peakHourRange: store.editableReducer.variables.peakHourRange?.value,
-  screen : store.planReducer.screenSelected,
+  screen: store.planReducer.screenSelected,
   progress: store.clientReducer.progress,
-  carsOnNormal : store.editableReducer.variables.carsOnNormal.value,
-  carsOnPeak : store.editableReducer.variables.carsOnPeak.value,
-  normalHourPrice : store.editableReducer.variables.normalHourSpotPrice?.value,
-  peakHourPrice : store.editableReducer.variables.peakHourSpotPrice?.value,
-  loopDuration : store.editableReducer.variables.loopDuration?.value,
+  carsOnNormal: store.editableReducer.variables.carsOnNormal.value,
+  carsOnPeak: store.editableReducer.variables.carsOnPeak.value,
+  normalHourPrice: store.editableReducer.variables.normalHourSpotPrice?.value,
+  peakHourPrice: store.editableReducer.variables.peakHourSpotPrice?.value,
+  loopDuration: store.editableReducer.variables.loopDuration?.value,
 })
 
 const mapDispatchToProps = dispatch => {
   return {
-    setProgress : data => { dispatch(setProgress(data))}
+    setProgress: data => { dispatch(setProgress(data)) }
   }
 }
 

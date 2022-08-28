@@ -3,20 +3,37 @@ import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import { setEditable } from '../actions/editable';
 import { initVariables } from '../utils/common';
+import ModalVideo from 'react-modal-video'
+import 'react-modal-video/css/modal-video.css';
+
 
 export class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isOpen: false
+    }
+    this.openModal = this.openModal.bind(this)
+  }
   componentDidMount() {
     initVariables(this.props.setEditables)
+    this.openModal();
+  }
+  openModal() {
+    this.setState({ isOpen: true })
   }
   render() {
     return (
       <div>
+        <ModalVideo channel='youtube' isOpen={this.state.isOpen} videoId='CrlFYtSl258' onClose={() => this.setState({ isOpen: false })} youtube={{
+          autoplay: 1,
+          mute: 1
+        }} />
         <div className="cover__page">
           <div className="grid_double">
             <div style={{ textAlign: "center" }} >
-              <div style={{ flex: 7 }}></div>
-              <div style={{ flex: 1 }} className="desktop_button">
-                <Link to="/contract" style={{ maxWidth: '150px' }}>
+              <div style={{ flex: 7 }}>
+                <Link to="/contract" className='home-button-position'>
                   <button
                     className="btn btn-primary btn-home contratar__Web "
                   >Contratar

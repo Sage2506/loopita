@@ -6,11 +6,12 @@ import { setCampaignName } from '../actions/plan';
 import { initVariables } from '../utils/common';
 import NavButtons from './common/navButtons';
 
+
 const listScreenT = [
   {
     id: 1,
     name: 'Pantalla Zona dorada, Rio Tijuana',
-    link:'https://www.impactovisual.info/medio.php?id=240',
+    link: 'https://www.impactovisual.info/medio.php?id=240',
     title: '1 hora',
     service: '12 pm',
     state: false,
@@ -18,6 +19,7 @@ const listScreenT = [
     avgViewers: '1548'
   }
 ]
+
 
 export class Contract extends Component {
   constructor(props) {
@@ -27,8 +29,13 @@ export class Contract extends Component {
       email: "",
       phone: "",
       camp: "",
-      selectedScreen: null
+      selectedScreen: null,
+      missingScreen: false
     }
+    this.nameInput = React.createRef();
+    this.mailInput = React.createRef();
+    this.phoneInput = React.createRef();
+    this.campaignInput = React.createRef();
   }
 
   componentDidMount = () => {
@@ -39,9 +46,10 @@ export class Contract extends Component {
       camp: this.props.camp,
       selectedScreen: this.props.selectedScreen,
     })
-    if(!this.props.loaded){
+    if (!this.props.loaded) {
       initVariables(this.props.setEditables)
     }
+
   }
 
   handleInputChange = e => {
@@ -65,10 +73,22 @@ export class Contract extends Component {
   }
 
   saveProgress = () => {
+    console.log("save progress");
     const { name, phone, email, camp, selectedScreen } = this.state
-    this.props.setClient({ name, phone, email, progress : 1 })
+    this.props.setClient({ name, phone, email, progress: 1 })
     this.props.setCampaignName({ campaignName: camp, screen: selectedScreen })
     this.props.setProgress(1);
+    if (name === '') {
+      this.nameInput.current.focus();
+    } else if (email === '') {
+      this.mailInput.current.focus();
+    } else if (phone === '') {
+      this.phoneInput.current.focus();
+    } else if (camp === '') {
+      this.campaignInput.current.focus();
+    } else if (selectedScreen === null) {
+      this.setState({missingScreen: true })
+    }
   }
 
   isChecked = (e, value) => {
@@ -85,8 +105,11 @@ export class Contract extends Component {
     return true
   }
 
+  validateForm = () => {
+
+  }
   render() {
-    const { name, email, phone, camp, selectedScreen } = this.state
+    const { name, email, phone, camp, selectedScreen, missingScreen } = this.state
     const { loaded, homeInputFourLabel } = this.props
     return (
       <div className="container">
@@ -103,6 +126,7 @@ export class Contract extends Component {
                     name="name"
                     value={name}
                     onChange={this.handleInputChange}
+                    ref={this.nameInput}
                   />
                 </div>
                 <div className="form-group">
@@ -113,6 +137,7 @@ export class Contract extends Component {
                     name="email"
                     value={email}
                     onChange={this.handleInputChange}
+                    ref={this.mailInput}
                   />
                 </div>
                 <div className="form-group">
@@ -123,6 +148,7 @@ export class Contract extends Component {
                     name="phone"
                     value={phone}
                     onChange={this.handleInputChange}
+                    ref={this.phoneInput}
                   />
                 </div>
                 <hr />
@@ -134,6 +160,7 @@ export class Contract extends Component {
                     name="camp"
                     value={camp}
                     onChange={this.handleInputChange}
+                    ref={this.campaignInput}
                   />
                 </div>
               </form>
@@ -176,6 +203,7 @@ export class Contract extends Component {
                 ))}
               </tbody>
             </table>
+            {missingScreen && <p className='errorMessage'>Favor de seleccionar almenos una pantalla *</p>}
             <div>
               <p
                 className="title__form"
@@ -187,6 +215,8 @@ export class Contract extends Component {
               saveProgress={this.saveProgress}
               firstLink={'/daily_plan'}
               secondLink={'/monthly_plan'}
+              firstLinkValidate={true}
+              secondLinkValidate={true}
               firstName={'En serio'}
               secondName={'Muy en serio'}
               firstSubText={"plan por dia"}
@@ -214,8 +244,8 @@ const mapDispatchToProps = dispatch => {
   return {
     setClient: data => { dispatch(setClient(data)) },
     setCampaignName: data => { dispatch(setCampaignName(data)) },
-    setEditables : data => { dispatch(setEditable(data))},
-    setProgress: data => { dispatch(setProgress(data))}
+    setEditables: data => { dispatch(setEditable(data)) },
+    setProgress: data => { dispatch(setProgress(data)) }
   }
 }
 

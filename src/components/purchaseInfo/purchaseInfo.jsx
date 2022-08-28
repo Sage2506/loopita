@@ -5,6 +5,7 @@ import axios from 'axios'
 import { setPurchaseInfo } from '../../actions/plan';
 import ButtonsWithMail from './buttonsWithMail';
 import BuyForm from './buyForm';
+import { calculateDailyServiceTotals, parsePeakHourRange } from '../../utils/common';
 
 export class PurchaseInfo extends Component {
 
@@ -39,14 +40,15 @@ export class PurchaseInfo extends Component {
       dailyPlan,
       planType
     } = this.props.fullData.planReducer
-    const {name, email, phone} = this.props.fullData.clientReducer
+    const { name, email, phone } = this.props.fullData.clientReducer
+
 
     const data = {
-      screenSelected : {
+      screenSelected: {
         name: this.props.screenSelected.name
       },
-      clientData : {
-        nameClient : name,
+      clientData: {
+        nameClient: name,
         email: email,
         tel: phone,
         camp: campaignName
@@ -60,17 +62,20 @@ export class PurchaseInfo extends Component {
       },
     }
 
-    if( planType === 'monthly'){
+    if (planType === 'monthly') {
       data['mensualPlan'] = {
         id: monthlyPlan.id,
         price: monthlyPlan.price,
         name: monthlyPlan.name,
 
       }
+      data['total'] = monthlyPlan.price
     } else {
       data['dailyPlan'] = {
         selectedDays: dailyPlan
       }
+      const { total } = calculateDailyServiceTotals(this.props.dailyPlan, parsePeakHourRange(this.props.peakHourRange), this.props.normalHourPrice, this.props.peakHourPrice, this.props.loopDuration)
+      data['total'] = total
     }
     return data
   }
@@ -80,7 +85,7 @@ export class PurchaseInfo extends Component {
     axios.post('https://loopita.impactovisual.info/api/contact/index.php', data).then(response => {
       if (response.data.sent) {
         let msj = '¡Pronto nos contactaremos contigo!'
-        if(this.props.confirmMessage){
+        if (this.props.confirmMessage) {
           msj = this.props.confirmMessage;
         }
         alert(msj)
@@ -93,7 +98,7 @@ export class PurchaseInfo extends Component {
   }
   render() {
     var { redirect, disableManually } = this.state
-    const {legal_name, rfc, fiscal_addres, payment_mode, promo_code} = this.props
+    const { legal_name, rfc, fiscal_addres, payment_mode, promo_code } = this.props
     if (redirect) {
       return (<Navigate to="/" />)
     } else {
@@ -103,11 +108,11 @@ export class PurchaseInfo extends Component {
             Confirmación de compra
           </p>
           <BuyForm editPurchaseInfo={this.editPurchaseInfo}
-           legal_name={legal_name}
-           rfc={rfc}
-           fiscal_addres={fiscal_addres}
-           payment_mode={payment_mode}
-           promo_code={promo_code}
+            legal_name={legal_name}
+            rfc={rfc}
+            fiscal_addres={fiscal_addres}
+            payment_mode={payment_mode}
+            promo_code={promo_code}
           />
           <ButtonsWithMail
             firstName="Atrás"
@@ -131,15 +136,21 @@ const mapStateToProps = store => ({
   fiscal_addres: store.planReducer.fiscal_addres,
   payment_mode: store.planReducer.payment_mode,
   promo_code: store.planReducer.promo_code,
-  fullData : store,
-  screenSelected : store.planReducer.screenSelected,
-  planType : store.planReducer.planType,
-  confirmMessage : store.editableReducer.variables.confirmMessage.value
+  fullData: store,
+  screenSelected: store.planReducer.screenSelected,
+  planType: store.planReducer.planType,
+  confirmMessage: store.editableReducer.variables.confirmMessage.value,
+  monthlyPlan: store.planReducer.monthlyPlan,
+  dailyPlan: store.planReducer.dailyPlan,
+  peakHourRange: store.editableReducer.variables.peakHourRange?.value,
+  normalHourPrice: store.editableReducer.variables.normalHourSpotPrice?.value,
+  peakHourPrice: store.editableReducer.variables.peakHourSpotPrice?.value,
+  loopDuration: store.editableReducer.variables.loopDuration?.value,
 })
 
 const mapDispatchToProps = dispatch => {
   return {
-    setPurchaseInfo: data => { dispatch(setPurchaseInfo(data))}
+    setPurchaseInfo: data => { dispatch(setPurchaseInfo(data)) }
   }
 }
 

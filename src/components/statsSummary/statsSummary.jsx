@@ -153,10 +153,11 @@ export class StatsSummary extends Component {
               <p className="title__video">Previsualizacion</p>
               <p>Especificaciones del anuncio</p>
               {file && fileExtension !== "" && videoFormats.includes(fileExtension) &&
-                <div>
-                  <video controls id="videoPreview" autoPlay={true}>
+                <div className='add-container'>
+                  <video controls className="previewImg" autoPlay={true}>
                     <source src={URL.createObjectURL(file)} />
                   </video>
+                  <img className='background' src={addBackground} alt="add background" />
                 </div>
               }
               {file && fileExtension !== "" && imageFormats.includes(fileExtension) &&
@@ -289,9 +290,9 @@ const mapStateToProps = store => ({
   peakHourRange: store.editableReducer.variables.peakHourRange?.value,
   screen: store.planReducer.screenSelected,
   progress: store.clientReducer.progress,
-  carsOnNormal: store.editableReducer.variables.carsOnNormal.value,
-  carsOnPeak: store.editableReducer.variables.carsOnPeak.value,
-  normalHourPrice: store.editableReducer.variables.normalHourSpotPrice?.value,
+  carsOnNormal: store.editableReducer.variables?.carsOnNormal?.value,
+  carsOnPeak: store.editableReducer.variables?.carsOnPeak?.value,
+  normalHourPrice: store.editableReducer.variables?.normalHourSpotPrice?.value,
   peakHourPrice: store.editableReducer.variables.peakHourSpotPrice?.value,
   loopDuration: store.editableReducer.variables.loopDuration?.value,
 })

@@ -105,6 +105,7 @@ export default class CalendarRange extends Component {
             onSelect={this.setDays}
             locale={locale}
             className="calendar"
+            disabled={ {before: new Date() }}
           />
           <p>Horario</p>
           {addHoursList.map((data, index) => (
@@ -119,6 +120,7 @@ export default class CalendarRange extends Component {
                 changeAddTime={this.changeAddTime}
                 minInitialHour={this.props.minInitialHour}
                 maxEndingHour={this.props.maxEndingHour}
+
               />
             </li>
           ))}

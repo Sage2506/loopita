@@ -31,7 +31,7 @@ export class MonthlyPlan extends Component {
     } else {
 
       return (
-        <div>
+        <div className='container'>
           <div className="container__plan-mensual" >
             <div className="mensual_plan_dobule_section_grid">
               <div>

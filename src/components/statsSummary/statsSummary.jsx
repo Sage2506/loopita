@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Navigate } from 'react-router-dom'
 import { setProgress } from '../../actions/client';
 import { calculateDailyServiceTotals, currencyFormat, parsePeakHourRange } from '../../utils/common';
+import { isSafari } from 'react-device-detect';
 import NavButtons from '../common/navButtons';
 import DropFile from './dropFile';
 import addBackground from './../../assets/img/billboard.png'
@@ -48,8 +49,7 @@ export class StatsSummary extends Component {
         { label: '30-44', percentage: 25 },
         { label: '45-54', percentage: 18 },
         { label: 'Más de 55', percentage: 10 },
-      ]
-
+      ],
     }
   }
 
@@ -146,19 +146,23 @@ export class StatsSummary extends Component {
           <div className="dobule_section_grid">
             <div>
               <p className="title__video">¿Como te van a recordar?</p>
-              <p>Sube tu archivo en formato .jpg, .png o .mp4</p>
-              <DropFile uploadFile={this.handleUpload} />
+              {!isSafari && <p>Sube tu archivo en formato .jpg, .png o .mp4</p>}
+              {isSafari && <p>Sube tu archivo en formato .jpg, o .png </p>}
+              <DropFile uploadFile={this.handleUpload} isSafari = {isSafari}/>
             </div>
             <div>
               <p className="title__video">Previsualizacion</p>
               <p>Especificaciones del anuncio</p>
-              {file && fileExtension !== "" && videoFormats.includes(fileExtension) &&
+              {!isSafari && file && fileExtension !== "" && videoFormats.includes(fileExtension) &&
                 <div className='add-container'>
                   <video controls className="previewImg" autoPlay={true}>
                     <source src={URL.createObjectURL(file)} />
                   </video>
                   <img className='background' src={addBackground} alt="add background" />
                 </div>
+              }
+              {isSafari && file && fileExtension !== "" && videoFormats.includes(fileExtension) &&
+                <p>Su navegador no admite video</p>
               }
               {file && fileExtension !== "" && imageFormats.includes(fileExtension) &&
                 <div className='add-container'>

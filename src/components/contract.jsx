@@ -239,7 +239,7 @@ export class Contract extends Component {
               disabledBtn={name === '' || email === '' || phone === '' || selectedScreen === null}
             />
             <div className="container__btns-info">
-              <Link to={'/spots_form'} className={'btn btn-primary btn-sm margin-auto'} disabled={name === '' || email === '' || phone === '' || selectedScreen === null} onClick={this.navigateToSpotsForm}>
+              <Link to={ (name === '' || email === '' || phone === '' || selectedScreen === null) ? '#':'/spots_form'} className={'btn btn-primary btn-sm margin-auto'} onClick={this.navigateToSpotsForm}>
                 Tercera opcion
                 <span className='btn-sub-text'> <br />subtext</span>
               </Link>

@@ -46,6 +46,11 @@ export class SpotsFormComponent extends Component {
     return Math.round(this.state.totalSpots / this.diferenceDays());
   }
 
+  componentDidMount () {
+    if(this.props.selectedDays) { this.setState({selectedDays: this.props.selectedDays})}
+    if(this.props.totalSpots) { this.setState({totalSpots: this.props.totalSpots})}
+  }
+
   render() {
     const { selectedDays, totalSpots } = this.state
     if (this.props.progress < 1) { return (<Navigate to="/contract" />) }
@@ -94,7 +99,9 @@ export class SpotsFormComponent extends Component {
 }
 
 const mapStateToProps = store => ({
-  progress : store.clientReducer.progress
+  progress : store.clientReducer.progress,
+  selectedDays: store.planReducer.spotPlan.selectedDays,
+  totalSpots: store.planReducer.spotPlan.totalSpots,
 })
 
 const mapDispatchToProps = dispatch => {

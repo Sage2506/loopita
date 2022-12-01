@@ -41,6 +41,23 @@ export const calculateDailyServiceTotals = (dailyData, peakRange, lowPrice = 50,
   return { total, minTotal, maxTotal, totalHours, lowHours, highHours, totalSpots, timesShowing }
 }
 
+export const calculateSpotServiceTotals = (spots, dayStart, dayEnd, peakRange, lowPrice = 50, highPrice = 75, loopDuration = 300) => {
+  const peakInit = peakRange.peakInit || 13;
+  const peakEnd = peakRange.peakEnd || 20;
+  const totalSpotsNotCalculated = spots;
+  const timesShowing = 3600/ loopDuration;
+  const totalHours = totalSpotsNotCalculated/timesShowing
+  const hoursPerDay = dayEnd - dayStart;
+  const peaksperDay = peakEnd - peakInit;
+  const peakPercent = peaksperDay / hoursPerDay
+  const highHours = totalHours * peakPercent
+  const lowHours = totalHours * (1 - peakPercent);
+  const maxTotal = totalSpotsNotCalculated * peakPercent * highPrice
+  const minTotal = totalSpotsNotCalculated * (1 - peakPercent) * lowPrice;
+  const total = minTotal + maxTotal;
+  return { total, minTotal, maxTotal, totalHours, lowHours, highHours, totalSpotsNotCalculated, timesShowing }
+}
+
 export const parsePeakHourRange = range => {
   if (!!range && range.length > 0) {
     return {

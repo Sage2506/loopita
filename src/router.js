@@ -8,6 +8,7 @@ import Ending from './components/ending';
 import MonthlyPlan from './components/monthlyPlan/monthlyPlan';
 import PurchaseInfo from './components/purchaseInfo/purchaseInfo';
 import StatsSummary from './components/statsSummary/statsSummary';
+import SpotsFormComponent from './components/spotsForm/spotsForm';
 export class Router extends Component {
   render() {
     return (
@@ -19,6 +20,7 @@ export class Router extends Component {
         <Route path="/stats_summary" element={<StatsSummary />} />
         <Route path="/purchase_info" element={<PurchaseInfo />} />
         <Route path="/ending" element={<Ending />} />
+        <Route path='/spots_form' element={<SpotsFormComponent/>}/>
 
       </Routes>
     )

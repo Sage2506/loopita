@@ -113,19 +113,14 @@ export class StatsSummary extends Component {
   render() {
 
     if (this.props.progress < 2) {
-      if (this.props.planType === 'monthly') {
-        return (
-          <Navigate to="/monthly_plan" />
-        )
-      } else {
-        return (<Navigate to="/daily_plan" />)
-      }
+      if (this.props.planType === 'monthly') { return (<Navigate to="/monthly_plan" />) }
+      if (this.props.planType === 'daily') { return (<Navigate to="/daily_plan" />) }
+      if (this.props.planType === 'spots') { return (<Navigate to="/spots_form" />) }
     } else {
 
       const {
         file,
         statistics,
-
         fileExtension,
         videoFormats,
         imageFormats
@@ -148,7 +143,7 @@ export class StatsSummary extends Component {
               <p className="title__video">¿Como te van a recordar?</p>
               {!isSafari && <p>Sube tu archivo en formato .jpg, .png o .mp4</p>}
               {isSafari && <p>Sube tu archivo en formato .jpg, o .png </p>}
-              <DropFile uploadFile={this.handleUpload} isSafari = {isSafari}/>
+              <DropFile uploadFile={this.handleUpload} isSafari={isSafari} />
             </div>
             <div>
               <p className="title__video">Previsualizacion</p>

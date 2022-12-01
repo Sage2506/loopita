@@ -5,6 +5,7 @@ import { setEditable } from '../actions/editable';
 import { setCampaignName } from '../actions/plan';
 import { initVariables } from '../utils/common';
 import NavButtons from './common/navButtons';
+import { Link } from 'react-router-dom';
 
 
 const listScreenT = [
@@ -21,6 +22,8 @@ const listScreenT = [
 ]
 
 
+
+
 export class Contract extends Component {
   constructor(props) {
     super(props)
@@ -30,7 +33,7 @@ export class Contract extends Component {
       phone: "",
       camp: "",
       selectedScreen: null,
-      missingScreen: false
+      missingScreen: false,
     }
     this.nameInput = React.createRef();
     this.mailInput = React.createRef();
@@ -56,28 +59,30 @@ export class Contract extends Component {
     this.setState({
       [e.target.name]: e.target.value
     })
-    //setClient(newClient) replace by store the client on the redux
+    this.saveStateToRedux();
   }
 
   handleSubmit = e => {
     e.preventDefault()
-
-    //setClient(this.state) replace by store the client on the redux
-
   }
 
   handleSelectedCheck = (screen) => {
     this.setState({
       selectedScreen: screen
     })
+    this.campaignInput();
   }
 
-  saveProgress = () => {
-    console.log("save progress");
+  saveStateToRedux = () => {
     const { name, phone, email, camp, selectedScreen } = this.state
     this.props.setClient({ name, phone, email, progress: 1 })
     this.props.setCampaignName({ campaignName: camp, screen: selectedScreen })
     this.props.setProgress(1);
+
+  }
+  saveProgress = () => {
+    this.saveStateToRedux()
+    const { name, phone, email, camp, selectedScreen } = this.state
     if (name === '') {
       this.nameInput.current.focus();
     } else if (email === '') {
@@ -87,7 +92,7 @@ export class Contract extends Component {
     } else if (camp === '') {
       this.campaignInput.current.focus();
     } else if (selectedScreen === null) {
-      this.setState({missingScreen: true })
+      this.setState({ missingScreen: true })
     }
   }
 
@@ -108,6 +113,16 @@ export class Contract extends Component {
   validateForm = () => {
 
   }
+
+  navigateToSpotsForm = () => {
+    this.saveProgress();
+    const { name, email, phone, selectedScreen } = this.state
+    if (name === '' || email === '' || phone === '' || selectedScreen === null) {
+
+    } else {
+    }
+  }
+
   render() {
     const { name, email, phone, camp, selectedScreen, missingScreen } = this.state
     const { loaded, homeInputFourLabel } = this.props
@@ -223,6 +238,12 @@ export class Contract extends Component {
               secondSubText={"plan mensual"}
               disabledBtn={name === '' || email === '' || phone === '' || selectedScreen === null}
             />
+            <div className="container__btns-info">
+              <Link to={'/spots_form'} className={'btn btn-primary btn-sm margin-auto'} disabled={name === '' || email === '' || phone === '' || selectedScreen === null} onClick={this.navigateToSpotsForm}>
+                Tercera opcion
+                <span className='btn-sub-text'> <br />subtext</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import TimeRangeInputComponent from './timeRangeInput';
 
 export default class TimePickerDate extends Component {
   constructor(props) {
@@ -86,40 +87,15 @@ export default class TimePickerDate extends Component {
     return (
       <div>
         {this.props.getDate.stringDate} <button className='icon-button' onClick={this.removeDate}><i className="fas fa-trash"></i></button>
-        <div className="display-columns-wrapp">
-          <div>
-            Hora inicio:
-            <div className="input-group inline-group">
-              <div className="input-group-prepend">
-                <button className="btn btn-outline-secondary btn-minus" onClick={startTimeDown}>
-                  <i className="fa fa-minus"></i>
-                </button>
-              </div>
-              <input className="form-control quantity" value={this.parseHourToAmPm(startHour)} type="text" name="startHour" id="startHour" readOnly={true} />
-              <div className="input-group-append">
-                <button className="btn btn-outline-secondary btn-plus" onClick={startTimeUp}>
-                  <i className="fa fa-plus"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div>
-            Hora final:
-            <div className="input-group inline-group">
-              <div className="input-group-prepend">
-                <button className="btn btn-outline-secondary btn-minus" onClick={endTimeDown}>
-                  <i className="fa fa-minus"></i>
-                </button>
-              </div>
-              <input className="form-control quantity" value={this.parseHourToAmPm(endHour)} type="text" name="endHour" id="endHour" readOnly={true} />
-              <div className="input-group-append">
-                <button className="btn btn-outline-secondary btn-plus" onClick={endTimeUp}>
-                  <i className="fa fa-plus"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <TimeRangeInputComponent
+          endTimeDown={endTimeDown}
+          endTimeUp={endTimeUp}
+          parseHourToAmPm={this.parseHourToAmPm}
+          startTimeUp={startTimeUp}
+          startTimeDown={startTimeDown}
+          startHour={startHour}
+          endHour={endHour}
+        ></TimeRangeInputComponent>
       </div>
     );
   }

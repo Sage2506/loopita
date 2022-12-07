@@ -31,6 +31,7 @@ export class SpotsFormComponent extends Component {
 
   diferenceDays = () => {
     const { selectedDays } = this.state
+    console.log("selectedDays", selectedDays)
     const from = new Date(selectedDays.from)
     const to = new Date(selectedDays.to)
     let difference = to.getTime() - from.getTime()
@@ -44,6 +45,7 @@ export class SpotsFormComponent extends Component {
   }
 
   spotsPerDay = () => {
+    if(this.state.selectedDays === undefined){ return 0}
     return Math.round(this.state.totalSpots / this.diferenceDays());
   }
 
@@ -121,7 +123,7 @@ export class SpotsFormComponent extends Component {
             </label>
             <input
               disabled
-              value={selectedDays.from && selectedDays.to && totalSpots > 0 ? this.spotsPerDay() : ''}
+              value={!!selectedDays && selectedDays.from && selectedDays.to && totalSpots > 0 ? this.spotsPerDay() : ''}
               type="text"
               className={`form-control form-control-sm`}
               placeholder='Spots por dia'
@@ -148,6 +150,7 @@ export class SpotsFormComponent extends Component {
           saveProgress={this.saveProgress}
           secondLink="/stats_summary"
           secondName="Siguiente"
+          disabledBtn={this.spotsPerDay() > 250 || this.state.totalSpots === '' || this.state.totalSpots === 0}
         />
       </div>
     );

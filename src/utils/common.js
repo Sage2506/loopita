@@ -50,9 +50,18 @@ export const calculateSpotServiceTotals = (spots, startHour, endHour, dayStart, 
   const timesShowing = 3600 / loopDuration;
   const totalHours = totalSpotsNotCalculated / timesShowing
   const hoursPerDay = endHour - startHour;
-  peakInit = peakInit < startHour ? startHour : peakInit;
-  peakEnd = peakEnd > endHour ? endHour : peakEnd;
-  const peaksperDay = peakEnd - peakInit;
+  let peaksperDay = 0;
+  if(startHour >= peakEnd || endHour <= peakInit){
+    peaksperDay = 0;
+  } else {
+    if(startHour > peakInit){
+      peakInit = startHour
+    }
+    if(endHour< peakEnd){
+      peakEnd = endHour
+    }
+    peaksperDay = peakEnd-peakInit;
+  }
   const peakPercent = peaksperDay / hoursPerDay
   const highHours = totalHours * peakPercent
   const lowHours = totalHours * (1 - peakPercent);

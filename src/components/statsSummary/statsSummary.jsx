@@ -73,7 +73,7 @@ export class StatsSummary extends Component {
       statistics.totalSpots = 3600 / this.props.loopDuration * 17 * 30 * monthlyPlan.loopMultipliyer
       statistics.totalProjectTime = 18 * 10 * 20 / 60 * 30;
       statistics.totalCars = Math.round(this.state.carsPerHour / 18 / 60 * statistics.totalProjectTime)
-    } else if(planType === 'daily') {
+    } else if (planType === 'daily') {
       const { total, totalHours, totalSpots, timesShowing, lowHours, highHours } = calculateDailyServiceTotals(dailyPlan, parsePeakHourRange(peakHourRange), this.props.normalHourPrice, this.props.peakHourPrice, this.props.loopDuration)
       statistics.total = total;
       statistics.peakHour = lowHours * timesShowing;
@@ -81,9 +81,16 @@ export class StatsSummary extends Component {
       statistics.totalSpots = totalSpots
       statistics.totalProjectTime = (totalHours * timesShowing * 20 / 60).toFixed(2)
       statistics.totalCars = Math.round(((this.props.carsOnNormal * lowHours) + (this.props.carsOnPeak * highHours)) / timesShowing)
-    } else{
-      let {totalSpots, minInitialHour, maxEndingHour, normalHourPrice, peakHourPrice, loopDuration} = this.props
-      const { total, totalHours, totalSpotsNotCalculated, timesShowing, lowHours, highHours } = calculateSpotServiceTotals(totalSpots, minInitialHour, maxEndingHour,parsePeakHourRange(peakHourRange), normalHourPrice, peakHourPrice, loopDuration );
+    } else {
+      let { totalSpots, minInitialHour, maxEndingHour, normalHourPrice, peakHourPrice, loopDuration, startHour, endHour } = this.props
+      const {
+        highHours,
+        lowHours,
+        timesShowing,
+        total,
+        totalHours,
+        totalSpotsNotCalculated,
+      } = calculateSpotServiceTotals(totalSpots, startHour, endHour, minInitialHour, maxEndingHour, parsePeakHourRange(peakHourRange), normalHourPrice, peakHourPrice, loopDuration);
       statistics.total = total;
       statistics.peakHour = lowHours * timesShowing;
       statistics.noPeakHour = highHours * timesShowing;
@@ -295,8 +302,8 @@ const mapStateToProps = store => ({
   carsOnPeak: store.editableReducer.variables?.carsOnPeak?.value,
   dailyPlan: store.planReducer.dailyPlan,
   loopDuration: store.editableReducer.variables.loopDuration?.value,
-  maxEndingHour : store.editableReducer.variables.maxEndHour?.value,
-  minInitialHour : store.editableReducer.variables.minInitialHour?.value,
+  maxEndingHour: store.editableReducer.variables.maxEndHour?.value,
+  minInitialHour: store.editableReducer.variables.minInitialHour?.value,
   monthlyPlan: store.planReducer.monthlyPlan,
   normalHourPrice: store.editableReducer.variables?.normalHourSpotPrice?.value,
   peakHourPrice: store.editableReducer.variables.peakHourSpotPrice?.value,
@@ -305,7 +312,8 @@ const mapStateToProps = store => ({
   progress: store.clientReducer.progress,
   screen: store.planReducer.screenSelected,
   totalSpots: store.planReducer.spotPlan.totalSpots,
-
+  startHour: store.planReducer.spotPlan?.startHour || store.editableReducer.variables.minInitialHour?.value,
+  endHour: store.planReducer.spotPlan?.endHour || store.editableReducer.variables.maxEndHour?.value,
 })
 
 const mapDispatchToProps = dispatch => {

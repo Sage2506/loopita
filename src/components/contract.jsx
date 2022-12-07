@@ -70,7 +70,6 @@ export class Contract extends Component {
     this.setState({
       selectedScreen: screen
     })
-    this.campaignInput();
   }
 
   saveStateToRedux = () => {

@@ -1,4 +1,4 @@
-import { SET_CAMPAIGN_NAME, SET_DAILY_PLAN, SET_MONTHLY_PLAN, SET_PURCHASE_INFO, SET_SPOT_PLAN } from "../actions/plan";
+import { SET_CAMPAIGN_NAME, SET_DAILY_PLAN, SET_MONTHLY_PLAN, SET_PURCHASE_INFO, SET_SPOT_PLAN, SET_SPOT_PLAN_END_HOUR, SET_SPOT_PLAN_START_HOUR } from "../actions/plan";
 
 const initialPlan = {
   name: "",
@@ -28,7 +28,11 @@ export const planReducer = ( state = initialPlan, action) => {
     case SET_PURCHASE_INFO:
       return {...state, ...action.data}
     case SET_SPOT_PLAN :
-      return {...state, spotPlan :action.data, planType : 'spots'}
+      return {...state, spotPlan :{...state.spotPlan, ...action.data}, planType : 'spots'}
+    case SET_SPOT_PLAN_START_HOUR:
+      return {...state, spotPlan :{ ...state.spotPlan, startHour :action.data}};
+    case SET_SPOT_PLAN_END_HOUR:
+      return {...state, spotPlan :{ ...state.spotPlan, endHour :action.data}};
     default:
       return state;
   }

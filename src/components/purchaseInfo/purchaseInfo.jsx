@@ -24,8 +24,18 @@ export class PurchaseInfo extends Component {
   }
 
   saveProgress = () => {
+  }
 
-
+  parseHourToAmPm = (hour) => {
+    if (hour === 12) {
+      return `12:00 PM`
+    } else if (hour > 12 && hour < 24) {
+      return `${hour - 12}:00 PM`
+    } else if (hour === 24) {
+      return `${hour - 12}:00 AM`
+    } else {
+      return `${hour}:00 AM`
+    }
   }
 
   setSubmitData = () => {
@@ -70,12 +80,41 @@ export class PurchaseInfo extends Component {
 
       }
       data['total'] = monthlyPlan.price
-    } else {
+      data['configuredPlan'] = 3;
+    } else if (planType === 'daily') {
       data['dailyPlan'] = {
         selectedDays: dailyPlan
       }
       const { total } = calculateDailyServiceTotals(this.props.dailyPlan, parsePeakHourRange(this.props.peakHourRange), this.props.normalHourPrice, this.props.peakHourPrice, this.props.loopDuration)
       data['total'] = total
+      data['configuredPlan'] = 2;
+    } else {
+      const {
+        endHour,
+        maxEndingHour,
+        minInitialHour,
+        spotsPlan,
+        startHour,
+      } = this.props
+      data['configuredPlan'] = 1;
+      if (!!spotsPlan.selectedDays.from) {
+        data['from'] = spotsPlan.selectedDays.from.toLocaleDateString()
+        data['to'] = spotsPlan.selectedDays.from.toLocaleDateString()
+      }
+      if (!!spotsPlan.selectedDays.to) {
+        data['to'] = spotsPlan.selectedDays.to.toLocaleDateString()
+      }
+      if (!!startHour) {
+        data['startHour'] = this.parseHourToAmPm(startHour)
+      } else {
+        data['startHour'] = this.parseHourToAmPm(minInitialHour)
+      }
+      if (!!endHour) {
+        data['endHour'] = this.parseHourToAmPm(endHour)
+      } else {
+        data['endHour'] = this.parseHourToAmPm(maxEndingHour)
+      }
+      data['totalSpots'] = spotsPlan.totalSpots
     }
     return data
   }
@@ -131,21 +170,26 @@ export class PurchaseInfo extends Component {
 }
 
 const mapStateToProps = store => ({
-  legal_name: store.planReducer.legal_name,
-  rfc: store.planReducer.rfc,
-  fiscal_addres: store.planReducer.fiscal_addres,
-  payment_mode: store.planReducer.payment_mode,
-  promo_code: store.planReducer.promo_code,
-  fullData: store,
-  screenSelected: store.planReducer.screenSelected,
-  planType: store.planReducer.planType,
   confirmMessage: store.editableReducer.variables.confirmMessage.value,
-  monthlyPlan: store.planReducer.monthlyPlan,
   dailyPlan: store.planReducer.dailyPlan,
-  peakHourRange: store.editableReducer.variables.peakHourRange?.value,
-  normalHourPrice: store.editableReducer.variables.normalHourSpotPrice?.value,
-  peakHourPrice: store.editableReducer.variables.peakHourSpotPrice?.value,
+  endHour: store.planReducer.endHour,
+  fiscal_addres: store.planReducer.fiscal_addres,
+  fullData: store,
+  legal_name: store.planReducer.legal_name,
   loopDuration: store.editableReducer.variables.loopDuration?.value,
+  maxEndingHour: store.editableReducer.variables.maxEndHour?.value,
+  minInitialHour: store.editableReducer.variables.minInitialHour?.value,
+  monthlyPlan: store.planReducer.monthlyPlan,
+  normalHourPrice: store.editableReducer.variables.normalHourSpotPrice?.value,
+  payment_mode: store.planReducer.payment_mode,
+  peakHourPrice: store.editableReducer.variables.peakHourSpotPrice?.value,
+  peakHourRange: store.editableReducer.variables.peakHourRange?.value,
+  planType: store.planReducer.planType,
+  promo_code: store.planReducer.promo_code,
+  rfc: store.planReducer.rfc,
+  screenSelected: store.planReducer.screenSelected,
+  spotsPlan: store.planReducer.spotPlan,
+  startHour: store.planReducer.startHour,
 })
 
 const mapDispatchToProps = dispatch => {

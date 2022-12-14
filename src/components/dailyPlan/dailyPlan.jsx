@@ -22,6 +22,7 @@ export class DailyPlan extends Component {
 
 
   render() {
+    console.log('this props progress',this.props.progress)
     if (this.props.progress < 1) {
       return (
         <Navigate to="/contract" />

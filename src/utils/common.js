@@ -41,6 +41,36 @@ export const calculateDailyServiceTotals = (dailyData, peakRange, lowPrice = 50,
   return { total, minTotal, maxTotal, totalHours, lowHours, highHours, totalSpots, timesShowing }
 }
 
+export const calculateSpotServiceTotals = (spots, startHour, endHour, dayStart, dayEnd, peakRange, lowPrice = 50, highPrice = 75, loopDuration = 300) => {
+  startHour = startHour ? startHour : dayStart;
+  endHour = endHour ? endHour : dayEnd;
+  let peakInit = peakRange.peakInit || 13;
+  let peakEnd = peakRange.peakEnd || 20;
+  const totalSpotsNotCalculated = spots;
+  const timesShowing = 3600 / loopDuration;
+  const totalHours = totalSpotsNotCalculated / timesShowing
+  const hoursPerDay = endHour - startHour;
+  let peaksperDay = 0;
+  if(startHour >= peakEnd || endHour <= peakInit){
+    peaksperDay = 0;
+  } else {
+    if(startHour > peakInit){
+      peakInit = startHour
+    }
+    if(endHour< peakEnd){
+      peakEnd = endHour
+    }
+    peaksperDay = peakEnd-peakInit;
+  }
+  const peakPercent = peaksperDay / hoursPerDay
+  const highHours = totalHours * peakPercent
+  const lowHours = totalHours * (1 - peakPercent);
+  const maxTotal = totalSpotsNotCalculated * peakPercent * highPrice
+  const minTotal = totalSpotsNotCalculated * (1 - peakPercent) * lowPrice;
+  const total = minTotal + maxTotal;
+  return { total, minTotal, maxTotal, totalHours, lowHours, highHours, totalSpotsNotCalculated, timesShowing }
+}
+
 export const parsePeakHourRange = range => {
   if (!!range && range.length > 0) {
     return {
@@ -85,22 +115,24 @@ export const initVariables = (callback) => {
     }
   }).catch((error) => {
 
-    const response = { "constants":
-    [{ "constant": "2500", "description": "Cantidad de autos en hora normal", "tag": "carsOnNormal" },
-    { "constant": "3500", "description": "Cantidad de autos en hora pico", "tag": "carsOnPeak" },
-    { "constant": "320", "description": "Duracion del loop publicitario( en segundos)", "tag": "loopDuration" },
-    { "constant": "7", "description": "Hora a la que inicia la pantalla a operar(formato de 24)", "tag": "minInitialHour" },
-    { "constant": "24", "description": "Hora a la que termina la pantalla (formato 24)", "tag": "maxEndHour" },
-    { "constant": "3.5", "description": "Costo del spot en hora normal", "tag": "normalHourSpotPrice" },
-    { "constant": "5", "description": "Costo del spot en hora pico", "tag": "peakHourSpotPrice" },
-    { "constant": "20000", "description": "Costo del plan mensual 1", "tag": "monthlyPlanOne" },
-    { "constant": "30000", "description": "Costo del plan mensual 2", "tag": "monthlyPlanTwo" },
-    { "constant": "40000", "description": "Costo del plan mensual 3", "tag": "monthlyPlanThree" },
-    { "constant": "1", "description": "Multiplicador del loop del mes 1", "tag": "loopMultiplierOne" },
-    { "constant": "2", "description": "Multiplicador del loop del mes 2", "tag": "loopMultiplierTwo" },
-    { "constant": "3", "description": "Multiplicador del loop del mes 3", "tag": "loopMultiplierThree" }],
-    "labels": [
-      { "text": "Solicitud enviada. Nos contactaremos contigo antes de 24 horas al telefono proporcionado. Si gustas contactarete con nosotros: (664 )331-6786", "description": "Texto para confirmacion de solicitud de compra", "tag": "confirmMessage" }, { "text": "Empresa", "description": "El texto que va sobre el cuarto input de la segunda pantalla", "tag": "homeInputFourLabel" }, { "text": "14:00-18:00", "description": "rango de horas piko (formato 00:00-24:00)", "tag": "peakHourRange" }] }
+    const response = {
+      "constants":
+        [{ "constant": "2500", "description": "Cantidad de autos en hora normal", "tag": "carsOnNormal" },
+        { "constant": "3500", "description": "Cantidad de autos en hora pico", "tag": "carsOnPeak" },
+        { "constant": "320", "description": "Duracion del loop publicitario( en segundos)", "tag": "loopDuration" },
+        { "constant": "7", "description": "Hora a la que inicia la pantalla a operar(formato de 24)", "tag": "minInitialHour" },
+        { "constant": "24", "description": "Hora a la que termina la pantalla (formato 24)", "tag": "maxEndHour" },
+        { "constant": "3.5", "description": "Costo del spot en hora normal", "tag": "normalHourSpotPrice" },
+        { "constant": "5", "description": "Costo del spot en hora pico", "tag": "peakHourSpotPrice" },
+        { "constant": "20000", "description": "Costo del plan mensual 1", "tag": "monthlyPlanOne" },
+        { "constant": "30000", "description": "Costo del plan mensual 2", "tag": "monthlyPlanTwo" },
+        { "constant": "40000", "description": "Costo del plan mensual 3", "tag": "monthlyPlanThree" },
+        { "constant": "1", "description": "Multiplicador del loop del mes 1", "tag": "loopMultiplierOne" },
+        { "constant": "2", "description": "Multiplicador del loop del mes 2", "tag": "loopMultiplierTwo" },
+        { "constant": "3", "description": "Multiplicador del loop del mes 3", "tag": "loopMultiplierThree" }],
+      "labels": [
+        { "text": "Solicitud enviada. Nos contactaremos contigo antes de 24 horas al telefono proporcionado. Si gustas contactarete con nosotros: (664 )331-6786", "description": "Texto para confirmacion de solicitud de compra", "tag": "confirmMessage" }, { "text": "Empresa", "description": "El texto que va sobre el cuarto input de la segunda pantalla", "tag": "homeInputFourLabel" }, { "text": "14:00-18:00", "description": "rango de horas piko (formato 00:00-24:00)", "tag": "peakHourRange" }]
+    }
     const variables = {}
     response.constants.forEach(constant => {
       variables[constant.tag] = { description: constant.description, value: parseFloat(constant.constant) }

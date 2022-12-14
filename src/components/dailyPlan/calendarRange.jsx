@@ -88,7 +88,6 @@ export default class CalendarRange extends Component {
     })
   }
 
-
   compareDays = (dayOne, dayTwo) => {
     return parseDayToDDMMYYYY(dayOne) === parseDayToDDMMYYYY(dayTwo)
   }

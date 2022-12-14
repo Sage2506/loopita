@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Navigate } from 'react-router-dom'
 import { setProgress } from '../../actions/client';
-import { calculateDailyServiceTotals, currencyFormat, parsePeakHourRange } from '../../utils/common';
+import { calculateDailyServiceTotals, calculateSpotServiceTotals, currencyFormat, parsePeakHourRange } from '../../utils/common';
 import { isSafari } from 'react-device-detect';
 import NavButtons from '../common/navButtons';
 import DropFile from './dropFile';
@@ -54,7 +54,6 @@ export class StatsSummary extends Component {
   }
 
   componentDidMount = () => {
-    //TODO: print screen name
     const statistics = {
       noPeakHour: 0,
       peakHour: 0,
@@ -74,12 +73,28 @@ export class StatsSummary extends Component {
       statistics.totalSpots = 3600 / this.props.loopDuration * 17 * 30 * monthlyPlan.loopMultipliyer
       statistics.totalProjectTime = 18 * 10 * 20 / 60 * 30;
       statistics.totalCars = Math.round(this.state.carsPerHour / 18 / 60 * statistics.totalProjectTime)
-    } else {
+    } else if (planType === 'daily') {
       const { total, totalHours, totalSpots, timesShowing, lowHours, highHours } = calculateDailyServiceTotals(dailyPlan, parsePeakHourRange(peakHourRange), this.props.normalHourPrice, this.props.peakHourPrice, this.props.loopDuration)
       statistics.total = total;
       statistics.peakHour = lowHours * timesShowing;
       statistics.noPeakHour = highHours * timesShowing;
       statistics.totalSpots = totalSpots
+      statistics.totalProjectTime = (totalHours * timesShowing * 20 / 60).toFixed(2)
+      statistics.totalCars = Math.round(((this.props.carsOnNormal * lowHours) + (this.props.carsOnPeak * highHours)) / timesShowing)
+    } else {
+      let { totalSpots, minInitialHour, maxEndingHour, normalHourPrice, peakHourPrice, loopDuration, startHour, endHour } = this.props
+      const {
+        highHours,
+        lowHours,
+        timesShowing,
+        total,
+        totalHours,
+        totalSpotsNotCalculated,
+      } = calculateSpotServiceTotals(totalSpots, startHour, endHour, minInitialHour, maxEndingHour, parsePeakHourRange(peakHourRange), normalHourPrice, peakHourPrice, loopDuration);
+      statistics.total = total;
+      statistics.peakHour =  highHours * timesShowing;
+      statistics.noPeakHour = lowHours * timesShowing;
+      statistics.totalSpots = totalSpotsNotCalculated ? totalSpotsNotCalculated : 0;
       statistics.totalProjectTime = (totalHours * timesShowing * 20 / 60).toFixed(2)
       statistics.totalCars = Math.round(((this.props.carsOnNormal * lowHours) + (this.props.carsOnPeak * highHours)) / timesShowing)
     }
@@ -113,19 +128,14 @@ export class StatsSummary extends Component {
   render() {
 
     if (this.props.progress < 2) {
-      if (this.props.planType === 'monthly') {
-        return (
-          <Navigate to="/monthly_plan" />
-        )
-      } else {
-        return (<Navigate to="/daily_plan" />)
-      }
+      if (this.props.planType === 'monthly') { return (<Navigate to="/monthly_plan" />) }
+      if (this.props.planType === 'daily') { return (<Navigate to="/daily_plan" />) }
+      if (this.props.planType === 'spots') { return (<Navigate to="/spots_form" />) }
     } else {
 
       const {
         file,
         statistics,
-
         fileExtension,
         videoFormats,
         imageFormats
@@ -148,7 +158,7 @@ export class StatsSummary extends Component {
               <p className="title__video">¿Como te van a recordar?</p>
               {!isSafari && <p>Sube tu archivo en formato .jpg, .png o .mp4</p>}
               {isSafari && <p>Sube tu archivo en formato .jpg, o .png </p>}
-              <DropFile uploadFile={this.handleUpload} isSafari = {isSafari}/>
+              <DropFile uploadFile={this.handleUpload} isSafari={isSafari} />
             </div>
             <div>
               <p className="title__video">Previsualizacion</p>
@@ -178,7 +188,7 @@ export class StatsSummary extends Component {
                 <tbody>
                   <tr>
                     <td>No. total de spots</td>
-                    <td>{totalSpots.toFixed(2)}</td>
+                    <td>{totalSpots}</td>
                   </tr>
                   <tr>
                     <td>Pantalla</td>
@@ -288,17 +298,22 @@ export class StatsSummary extends Component {
 }
 
 const mapStateToProps = store => ({
-  planType: store.planReducer.planType,
-  dailyPlan: store.planReducer.dailyPlan,
-  monthlyPlan: store.planReducer.monthlyPlan,
-  peakHourRange: store.editableReducer.variables.peakHourRange?.value,
-  screen: store.planReducer.screenSelected,
-  progress: store.clientReducer.progress,
   carsOnNormal: store.editableReducer.variables?.carsOnNormal?.value,
   carsOnPeak: store.editableReducer.variables?.carsOnPeak?.value,
+  dailyPlan: store.planReducer.dailyPlan,
+  loopDuration: store.editableReducer.variables.loopDuration?.value,
+  maxEndingHour: store.editableReducer.variables.maxEndHour?.value,
+  minInitialHour: store.editableReducer.variables.minInitialHour?.value,
+  monthlyPlan: store.planReducer.monthlyPlan,
   normalHourPrice: store.editableReducer.variables?.normalHourSpotPrice?.value,
   peakHourPrice: store.editableReducer.variables.peakHourSpotPrice?.value,
-  loopDuration: store.editableReducer.variables.loopDuration?.value,
+  peakHourRange: store.editableReducer.variables.peakHourRange?.value,
+  planType: store.planReducer.planType,
+  progress: store.clientReducer.progress,
+  screen: store.planReducer.screenSelected,
+  totalSpots: store.planReducer.spotPlan.totalSpots,
+  startHour: store.planReducer.spotPlan?.startHour || store.editableReducer.variables.minInitialHour?.value,
+  endHour: store.planReducer.spotPlan?.endHour || store.editableReducer.variables.maxEndHour?.value,
 })
 
 const mapDispatchToProps = dispatch => {

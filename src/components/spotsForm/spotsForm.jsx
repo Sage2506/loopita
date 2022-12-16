@@ -31,11 +31,13 @@ export class SpotsFormComponent extends Component {
 
   diferenceDays = () => {
     const { selectedDays } = this.state
-    console.log("selectedDays", selectedDays)
     const from = new Date(selectedDays.from)
     const to = new Date(selectedDays.to)
-    let difference = to.getTime() - from.getTime()
-    difference = Math.ceil(difference / (1000 * 3600 * 24));
+    let difference = 0;
+    if (!!selectedDays.to) {
+      difference = to.getTime() - from.getTime()
+      difference = Math.ceil(difference / (1000 * 3600 * 24));
+    }
     return difference + 1;
   }
 
@@ -45,7 +47,7 @@ export class SpotsFormComponent extends Component {
   }
 
   spotsPerDay = () => {
-    if(this.state.selectedDays === undefined){ return 0}
+    if (this.state.selectedDays === undefined) { return 0 }
     return Math.round(this.state.totalSpots / this.diferenceDays());
   }
 
@@ -57,7 +59,7 @@ export class SpotsFormComponent extends Component {
   startTimeUp = () => {
     const { startHour, endHour, earliestHour, latestHour } = this.props;
     let newStartHour = startHour ? startHour : earliestHour;
-    let newEndHour = endHour? endHour : latestHour;
+    let newEndHour = endHour ? endHour : latestHour;
     if (newEndHour - newStartHour > 1) {
       this.props.changeStartHour(newStartHour + 1)
     }
@@ -73,7 +75,7 @@ export class SpotsFormComponent extends Component {
 
   endTimeUp = () => {
     const { endHour, latestHour } = this.props;
-    let newEndHour = endHour? endHour : latestHour;
+    let newEndHour = endHour ? endHour : latestHour;
     if (newEndHour !== this.props.latestHour) {
       this.props.changeEndHour(newEndHour + 1);
     }
@@ -82,7 +84,7 @@ export class SpotsFormComponent extends Component {
   endTimeDown = () => {
     const { endHour, startHour, latestHour, earliestHour } = this.props;
     let newStartHour = startHour ? startHour : earliestHour
-    let newEndHour = endHour? endHour : latestHour;
+    let newEndHour = endHour ? endHour : latestHour;
     if (newEndHour - newStartHour > 1) {
       this.props.changeEndHour(newEndHour - 1);
     }
@@ -118,16 +120,6 @@ export class SpotsFormComponent extends Component {
               className={`form-control form-control-sm`}
               placeholder='Numero total de spots'
             />
-            <label>
-              Spots diarios (maximo 250)
-            </label>
-            <input
-              disabled
-              value={!!selectedDays && selectedDays.from && selectedDays.to && totalSpots > 0 ? this.spotsPerDay() : ''}
-              type="text"
-              className={`form-control form-control-sm`}
-              placeholder='Spots por dia'
-            />
           </div>
         </form>
         <DayPicker
@@ -145,12 +137,13 @@ export class SpotsFormComponent extends Component {
           startHour={this.props.startHour || this.props.earliestHour}
           endHour={this.props.endHour || this.props.latestHour}
         />
+        {(this.spotsPerDay() > 250 || this.state.totalSpots === '' || this.state.totalSpots === 0 || (!!this.state.selectedDays && !this.state.selectedDays.from)) && <p className='required'>Favor de elegir un mayor rango de dias o una menor cantidad de spots</p>}
         <NavButtons
           backLink={true}
           saveProgress={this.saveProgress}
           secondLink="/stats_summary"
           secondName="Siguiente"
-          disabledBtn={this.spotsPerDay() > 250 || this.state.totalSpots === '' || this.state.totalSpots === 0}
+          disabledBtn={this.spotsPerDay() > 250 || this.state.totalSpots === '' || this.state.totalSpots === 0 || (!!this.state.selectedDays && !this.state.selectedDays.from)}
         />
       </div>
     );
@@ -163,8 +156,8 @@ const mapStateToProps = store => ({
   totalSpots: store.planReducer.spotPlan.totalSpots,
   startHour: store.planReducer.spotPlan.startHour,
   endHour: store.planReducer.spotPlan.endHour,
-  earliestHour : store.editableReducer.variables.minInitialHour?.value,
-  latestHour : store.editableReducer.variables.maxEndHour?.value,
+  earliestHour: store.editableReducer.variables.minInitialHour?.value,
+  latestHour: store.editableReducer.variables.maxEndHour?.value,
 })
 
 const mapDispatchToProps = dispatch => {

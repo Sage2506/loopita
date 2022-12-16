@@ -92,8 +92,8 @@ export class StatsSummary extends Component {
         totalSpotsNotCalculated,
       } = calculateSpotServiceTotals(totalSpots, startHour, endHour, minInitialHour, maxEndingHour, parsePeakHourRange(peakHourRange), normalHourPrice, peakHourPrice, loopDuration);
       statistics.total = total;
-      statistics.peakHour =  highHours * timesShowing;
-      statistics.noPeakHour = lowHours * timesShowing;
+      statistics.peakHour = Math.round(highHours * timesShowing);
+      statistics.noPeakHour = Math.round(lowHours * timesShowing);
       statistics.totalSpots = totalSpotsNotCalculated ? totalSpotsNotCalculated : 0;
       statistics.totalProjectTime = (totalHours * timesShowing * 20 / 60).toFixed(2)
       statistics.totalCars = Math.round(((this.props.carsOnNormal * lowHours) + (this.props.carsOnPeak * highHours)) / timesShowing)
@@ -273,7 +273,7 @@ export class StatsSummary extends Component {
               <table className="table table-striped">
                 <tbody>
                   <tr>
-                    <td>Presupuesto proyectado {total} </td>
+                    <td>Presupuesto proyectado </td>
                     <td>{currencyFormat(total)}</td>
                   </tr>
                 </tbody>

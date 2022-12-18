@@ -105,27 +105,13 @@ export class SpotsFormComponent extends Component {
 
   render() {
     const { selectedDays, totalSpots } = this.state
-    const { startHour,endHour, earliestHour, latestHour, peakHourRange, normalHourPrice, peakHourPrice, loopDuration } = this.props
+    const { startHour, endHour, earliestHour, latestHour, peakHourRange, normalHourPrice, peakHourPrice, loopDuration } = this.props
 
     const { total } = calculateSpotServiceTotals(totalSpots, startHour, endHour, earliestHour, latestHour, parsePeakHourRange(peakHourRange), normalHourPrice, peakHourPrice, loopDuration);
     if (this.props.progress < 1) { return (<Navigate to="/contract" />) }
     return (
       <div className='container'>
-        <form>
-          <div className='form-group'>
 
-            <label>
-              Spots por dia
-            </label>
-            <input
-              disabled
-              value={!!selectedDays && selectedDays.from && totalSpots > 0 ? this.spotsPerDay() : ''}
-              type="text"
-              className={`form-control form-control-sm`}
-              placeholder='Spots por dia'
-            />
-          </div>
-        </form>
         <DayPicker
           selected={selectedDays}
           onSelect={this.setRange}
@@ -141,18 +127,32 @@ export class SpotsFormComponent extends Component {
           startHour={this.props.startHour || this.props.earliestHour}
           endHour={this.props.endHour || this.props.latestHour}
         />
-        <label className="required">
-          Total de spots a contratar
-        </label>
-        <input
-          type="text"
-          name='totalSpots'
-          value={totalSpots}
-          onChange={this.handleInputChange}
-          className={`form-control form-control-sm`}
-          placeholder='Numero total de spots'
-        />
-        <label >Presupuesto proyectado { currencyFormat(total)}</label>
+        <form>
+          <div className='form-group'>
+            <label className="required">
+              Total de spots a contratar
+            </label>
+            <input
+              type="text"
+              name='totalSpots'
+              value={totalSpots}
+              onChange={this.handleInputChange}
+              className={`form-control form-control-sm`}
+              placeholder='Numero total de spots'
+            />
+            <label>
+              Spots por dia
+            </label>
+            <input
+              readOnly
+              value={!!selectedDays && selectedDays.from && totalSpots > 0 ? this.spotsPerDay() > 250 ? 'El maximo de spots por dia es de 250' : this.spotsPerDay() : ''}
+              type="text"
+              className={`form-control form-control-sm ${this.spotsPerDay() > 250 ? 'is-invalid' : ''}`}
+              placeholder='Spots por dia'
+            />
+            <label >Presupuesto proyectado {currencyFormat(total)}</label>
+          </div>
+        </form>
         {(this.spotsPerDay() > 250 || this.state.totalSpots === '' || this.state.totalSpots === 0 || (!!this.state.selectedDays && !this.state.selectedDays.from)) && <p className='required'>Favor de elegir un mayor rango de dias o una menor cantidad de spots</p>}
         <NavButtons
           backLink={true}

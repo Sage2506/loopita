@@ -22,7 +22,6 @@ export class DailyPlan extends Component {
 
 
   render() {
-    console.log('this props progress',this.props.progress)
     if (this.props.progress < 1) {
       return (
         <Navigate to="/contract" />
@@ -62,13 +61,13 @@ export class DailyPlan extends Component {
 const mapStateToProps = store => ({
   dailyPlan: store.planReducer.dailyPlan,
   loaded: store.editableReducer.loaded,
-  minInitialHour : store.editableReducer.variables.minInitialHour?.value,
-  maxEndingHour : store.editableReducer.variables.maxEndHour?.value,
-  peakHourRange : store.editableReducer.variables.peakHourRange?.value,
-  normalHourPrice : store.editableReducer.variables.normalHourSpotPrice?.value,
-  peakHourPrice : store.editableReducer.variables.peakHourSpotPrice?.value,
-  loopDuration : store.editableReducer.variables.loopDuration?.value,
-  progress : store.clientReducer.progress
+  minInitialHour: store.editableReducer.variables.minInitialHour?.value,
+  maxEndingHour: store.editableReducer.variables.maxEndHour?.value,
+  peakHourRange: store.editableReducer.variables.peakHourRange?.value,
+  normalHourPrice: store.editableReducer.variables.normalHourSpotPrice?.value,
+  peakHourPrice: store.editableReducer.variables.peakHourSpotPrice?.value,
+  loopDuration: store.editableReducer.variables.loopDuration?.value,
+  progress: store.clientReducer.progress
 })
 
 const mapDispatchToProps = dispatch => {

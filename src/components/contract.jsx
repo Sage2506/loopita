@@ -239,8 +239,8 @@ export class Contract extends Component {
             />
             <div className="container__btns-info">
               <Link to={ (name === '' || email === '' || phone === '' || selectedScreen === null) ? '#':'/spots_form'} className={'btn btn-primary btn-sm margin-auto'} onClick={this.navigateToSpotsForm}>
-                Tercera opcion
-                <span className='btn-sub-text'> <br />subtext</span>
+                Por un tiempo
+                <span className='btn-sub-text'> <br />Plan por paquete</span>
               </Link>
             </div>
           </div>

@@ -126,7 +126,7 @@ export class StatsSummary extends Component {
   }
 
   render() {
-
+    const { planType, selectedDays } = this.props
     if (this.props.progress < 2) {
       if (this.props.planType === 'monthly') { return (<Navigate to="/monthly_plan" />) }
       if (this.props.planType === 'daily') { return (<Navigate to="/daily_plan" />) }
@@ -186,6 +186,14 @@ export class StatsSummary extends Component {
             <div>
               <table className="table table-striped">
                 <tbody>
+                  {planType === 'spots' &&
+                    <tr>
+
+                      <td>Rango seleccionado</td>
+                      {!!selectedDays.from && !selectedDays.to && <td>Del <b>{selectedDays.from.toLocaleDateString()}</b></td>}
+                      {!!selectedDays.to && <td>Del <b>{selectedDays.from.toLocaleDateString()}</b> al <b>{selectedDays.to.toLocaleDateString()}</b></td>}
+                    </tr>
+                  }
                   <tr>
                     <td>No. total de spots</td>
                     <td>{totalSpots}</td>
@@ -311,6 +319,7 @@ const mapStateToProps = store => ({
   planType: store.planReducer.planType,
   progress: store.clientReducer.progress,
   screen: store.planReducer.screenSelected,
+  selectedDays: store.planReducer.spotPlan.selectedDays,
   totalSpots: store.planReducer.spotPlan.totalSpots,
   startHour: store.planReducer.spotPlan?.startHour || store.editableReducer.variables.minInitialHour?.value,
   endHour: store.planReducer.spotPlan?.endHour || store.editableReducer.variables.maxEndHour?.value,

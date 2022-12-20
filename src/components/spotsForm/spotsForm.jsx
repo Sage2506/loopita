@@ -118,6 +118,10 @@ export class SpotsFormComponent extends Component {
           mode='range'
           disabled={{ before: new Date() }}
         />
+        <div>
+          {!!this.state.selectedDays.from && !this.state.selectedDays.to && <p>Del <b>{this.state.selectedDays.from.toLocaleDateString()}</b></p>}
+          {!!this.state.selectedDays.to && <p>Del <b>{this.state.selectedDays.from.toLocaleDateString()}</b> al <b>{this.state.selectedDays.to.toLocaleDateString()}</b></p>}
+        </div>
         <TimeRangeInputComponent
           endTimeDown={this.endTimeDown}
           endTimeUp={this.endTimeUp}

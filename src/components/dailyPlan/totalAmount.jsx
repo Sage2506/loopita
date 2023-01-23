@@ -7,7 +7,7 @@ export default class TotalAmount extends Component {
       <div className="total__amount">
       <p className="total">Total:</p>
       <div className="bx-amount">
-          <p></p><p className="amoun__cant">{currencyFormat( this.props.amount)}</p>
+          <p></p><p className="amoun__cant">{currencyFormat( this.props.amount)} MXN</p>
       </div>
   </div>
     );

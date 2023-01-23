@@ -282,7 +282,7 @@ export class StatsSummary extends Component {
                 <tbody>
                   <tr>
                     <td>Presupuesto proyectado </td>
-                    <td>{currencyFormat(total)}</td>
+                    <td>{currencyFormat(total)} MXN</td>
                   </tr>
                 </tbody>
               </table>

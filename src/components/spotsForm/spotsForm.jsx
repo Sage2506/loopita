@@ -154,7 +154,7 @@ export class SpotsFormComponent extends Component {
               className={`form-control form-control-sm ${this.spotsPerDay() > 250 ? 'is-invalid' : ''}`}
               placeholder='Spots por dia'
             />
-            <label >Presupuesto proyectado {currencyFormat(total)}</label>
+            <label >Presupuesto proyectado {currencyFormat(total)} MXN</label>
           </div>
         </form>
         {(this.spotsPerDay() > 250 || this.state.totalSpots === '' || this.state.totalSpots === 0 || (!!this.state.selectedDays && !this.state.selectedDays.from)) && <p className='required'>Favor de elegir un mayor rango de dias o una menor cantidad de spots</p>}

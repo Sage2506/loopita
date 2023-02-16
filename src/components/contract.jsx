@@ -20,24 +20,15 @@ const listScreenT = [
     avgViewers: '1548'
   }
 ]
-
-
-
-
 export class Contract extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: "",
-      email: "",
-      phone: "",
-      camp: "",
+
       selectedScreen: null,
       missingScreen: false,
     }
-    this.nameInput = React.createRef();
-    this.mailInput = React.createRef();
-    this.phoneInput = React.createRef();
+
     this.campaignInput = React.createRef();
   }
 
@@ -73,24 +64,16 @@ export class Contract extends Component {
   }
 
   saveStateToRedux = () => {
-    const { name, phone, email, camp, selectedScreen } = this.state
-    this.props.setClient({ name, phone, email, progress: 1 })
+    const { camp, selectedScreen } = this.state
+    this.props.setClient({ progress: 1 })
     this.props.setCampaignName({ campaignName: camp, screen: selectedScreen })
     this.props.setProgress(1);
 
   }
   saveProgress = () => {
     this.saveStateToRedux()
-    const { name, phone, email, camp, selectedScreen } = this.state
-    if (name === '') {
-      this.nameInput.current.focus();
-    } else if (email === '') {
-      this.mailInput.current.focus();
-    } else if (phone === '') {
-      this.phoneInput.current.focus();
-    } else if (camp === '') {
-      this.campaignInput.current.focus();
-    } else if (selectedScreen === null) {
+    const { selectedScreen } = this.state
+    if (selectedScreen === null) {
       this.setState({ missingScreen: true })
     }
   }
@@ -115,71 +98,18 @@ export class Contract extends Component {
 
   navigateToSpotsForm = () => {
     this.saveProgress();
-    const { name, email, phone, selectedScreen } = this.state
-    if (name === '' || email === '' || phone === '' || selectedScreen === null) {
+    const { selectedScreen } = this.state
+    if (selectedScreen === null) {
 
     } else {
     }
   }
 
   render() {
-    const { name, email, phone, camp, selectedScreen, missingScreen } = this.state
-    const { loaded, homeInputFourLabel } = this.props
+    const { selectedScreen, missingScreen } = this.state
     return (
       <div className="container">
         <div className="grid__contrat">
-          <div>
-            <div>
-              <p className="title__form"> Vas en grande con Loopita </p>
-              <form onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                  <label className='required'>Nombre completo</label>
-                  <input
-                    type="text"
-                    className={`form-control form-control-sm`}
-                    name="name"
-                    value={name}
-                    onChange={this.handleInputChange}
-                    ref={this.nameInput}
-                  />
-                </div>
-                <div className="form-group">
-                  <label className='required'>Correo electrónico</label>
-                  <input
-                    type="email"
-                    className={`form-control form-control-sm `}
-                    name="email"
-                    value={email}
-                    onChange={this.handleInputChange}
-                    ref={this.mailInput}
-                  />
-                </div>
-                <div className="form-group">
-                  <label className='required'>Teléfono</label>
-                  <input
-                    type="text"
-                    className={`form-control form-control-sm`}
-                    name="phone"
-                    value={phone}
-                    onChange={this.handleInputChange}
-                    ref={this.phoneInput}
-                  />
-                </div>
-                <hr />
-                <div className="form-group ">
-                  <label>{loaded ? homeInputFourLabel.value : 'Nombre de campaña'}</label>
-                  <input
-                    type="text"
-                    className={`form-control form-control-sm `}
-                    name="camp"
-                    value={camp}
-                    onChange={this.handleInputChange}
-                    ref={this.campaignInput}
-                  />
-                </div>
-              </form>
-            </div>
-          </div>
           <div>
             <p className="title__form">
               Que te vean con loopita en
@@ -235,10 +165,10 @@ export class Contract extends Component {
               secondName={'Muy en serio'}
               firstSubText={"plan por dia"}
               secondSubText={"plan mensual"}
-              disabledBtn={name === '' || email === '' || phone === '' || selectedScreen === null}
+              disabledBtn={selectedScreen === null}
             />
             <div className="container__btns-info">
-              <Link to={ (name === '' || email === '' || phone === '' || selectedScreen === null) ? '#':'/spots_form'} className={'btn btn-primary btn-sm margin-auto'} onClick={this.navigateToSpotsForm}>
+              <Link to={(selectedScreen === null) ? '#' : '/spots_form'} className={'btn btn-primary btn-sm margin-auto'} onClick={this.navigateToSpotsForm}>
                 Por un tiempo
                 <span className='btn-sub-text'> <br />Plan por paquete</span>
               </Link>
@@ -251,13 +181,12 @@ export class Contract extends Component {
 }
 
 const mapStateToProps = store => ({
-  name: store.clientReducer.name,
-  email: store.clientReducer.email,
-  phone: store.clientReducer.phone,
   camp: store.planReducer.campaignName,
+  email: store.clientReducer.email,
+  loaded: store.editableReducer.loaded,
+  name: store.clientReducer.name,
+  phone: store.clientReducer.phone,
   selectedScreen: store.planReducer.screenSelected,
-  homeInputFourLabel: store.editableReducer.variables.homeInputFourLabel,
-  loaded: store.editableReducer.loaded
 })
 
 const mapDispatchToProps = dispatch => {

@@ -29,7 +29,6 @@ export class Contract extends Component {
       missingScreen: false,
     }
 
-    this.campaignInput = React.createRef();
   }
 
   componentDidMount = () => {
@@ -64,9 +63,9 @@ export class Contract extends Component {
   }
 
   saveStateToRedux = () => {
-    const { camp, selectedScreen } = this.state
+    const { selectedScreen } = this.state
     this.props.setClient({ progress: 1 })
-    this.props.setCampaignName({ campaignName: camp, screen: selectedScreen })
+    this.props.setCampaignName({ screen: selectedScreen })
     this.props.setProgress(1);
 
   }

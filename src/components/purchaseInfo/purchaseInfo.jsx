@@ -15,7 +15,14 @@ export class PurchaseInfo extends Component {
       purchaseConfirmationInfo: {},
       redirect: false,
       disableManually: false,
+      name: "",
+      email: "",
+      phone: "",
+      camp: "",
     }
+    this.nameInput = React.createRef();
+    this.mailInput = React.createRef();
+    this.phoneInput = React.createRef();
   }
 
   editPurchaseInfo = purchaseInfo => {
@@ -40,7 +47,6 @@ export class PurchaseInfo extends Component {
 
   setSubmitData = () => {
     const {
-      campaignName,
       legal_name,
       rfc,
       fiscal_addres,
@@ -48,9 +54,9 @@ export class PurchaseInfo extends Component {
       promo_code,
       monthlyPlan,
       dailyPlan,
-      planType
+      planType,
     } = this.props.fullData.planReducer
-    const { name, email, phone } = this.props.fullData.clientReducer
+    const { name, email, phone, camp } = this.state
 
 
     const data = {
@@ -61,7 +67,7 @@ export class PurchaseInfo extends Component {
         nameClient: name,
         email: email,
         tel: phone,
-        camp: campaignName
+        camp
       },
       purchaseInfo: {
         razonSocial: legal_name,
@@ -118,34 +124,102 @@ export class PurchaseInfo extends Component {
     }
     return data
   }
+
   handleSubmit = () => {
     this.setState({ disableManually: true })
-    const data = this.setSubmitData()
-    axios.post('https://loopita.impactovisual.info/api/contact/index.php', data).then(response => {
-      if (response.data.sent) {
-        let msj = '¡Pronto nos contactaremos contigo!'
-        if (this.props.confirmMessage) {
-          msj = this.props.confirmMessage;
+    const { name, email, phone } = this.state
+    if (name === '') {
+      this.nameInput.current.focus();
+    } else if (email === '') {
+      this.mailInput.current.focus();
+    } else if (phone === '') {
+      this.phoneInput.current.focus();
+    } else {
+      const data = this.setSubmitData()
+      axios.post('https://loopita.impactovisual.info/api/contact/index.php', data).then(response => {
+        if (response.data.sent) {
+          let msj = '¡Pronto nos contactaremos contigo!'
+          if (this.props.confirmMessage) {
+            msj = this.props.confirmMessage;
+          }
+          alert(msj)
+          this.setState({ disableManually: true })
+          this.setState({ redirect: true })
+        } else {
+          this.setState({ disableManually: true })
         }
-        alert(msj)
-        this.setState({ disableManually: true })
-        this.setState({ redirect: true })
-      } else {
-        this.setState({ disableManually: true })
-      }
+      })
+    }
+  }
+
+  handleInputChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
     })
   }
+
   render() {
-    var { redirect, disableManually } = this.state
-    const { legal_name, rfc, fiscal_addres, payment_mode, promo_code } = this.props
+    var { name, email, phone, redirect, disableManually, camp } = this.state
+    const { legal_name, rfc, fiscal_addres, payment_mode, promo_code, loaded, homeInputFourLabel } = this.props
     if (redirect) {
       return (<Navigate to="/" />)
     } else {
       return (
         <div className="container">
+          <div>
+            <p className="title__form"> Vas en grande con Loopita </p>
+            <form onSubmit={this.handleSubmit}>
+              <div className="form-group">
+                <label className='required'>Nombre completo</label>
+                <input
+                  type="text"
+                  className={`form-control form-control-sm`}
+                  name="name"
+                  value={name}
+                  onChange={this.handleInputChange}
+                  ref={this.nameInput}
+                />
+              </div>
+              <div className="form-group">
+                <label className='required'>Correo electrónico</label>
+                <input
+                  type="email"
+                  className={`form-control form-control-sm `}
+                  name="email"
+                  value={email}
+                  onChange={this.handleInputChange}
+                  ref={this.mailInput}
+                />
+              </div>
+              <div className="form-group">
+                <label className='required'>Teléfono</label>
+                <input
+                  type="text"
+                  className={`form-control form-control-sm`}
+                  name="phone"
+                  value={phone}
+                  onChange={this.handleInputChange}
+                  ref={this.phoneInput}
+                />
+              </div>
+              <hr />
+              <div className="form-group ">
+                <label>{loaded ? homeInputFourLabel.value : 'Nombre de campaña'}</label>
+                <input
+                  type="text"
+                  className={`form-control form-control-sm `}
+                  name="camp"
+                  value={camp}
+                  onChange={this.handleInputChange}
+                  ref={this.campaignInput}
+                />
+              </div>
+            </form>
+          </div>
           <p className="buy__title">
             Confirmación de compra
           </p>
+
           <BuyForm editPurchaseInfo={this.editPurchaseInfo}
             legal_name={legal_name}
             rfc={rfc}
@@ -170,12 +244,14 @@ export class PurchaseInfo extends Component {
 }
 
 const mapStateToProps = store => ({
-  confirmMessage: store.editableReducer.variables.confirmMessage.value,
+  confirmMessage: store.editableReducer.variables.confirmMessage?.value,
   dailyPlan: store.planReducer.dailyPlan,
   endHour: store.planReducer.endHour,
   fiscal_addres: store.planReducer.fiscal_addres,
   fullData: store,
+  homeInputFourLabel: store.editableReducer.variables.homeInputFourLabel,
   legal_name: store.planReducer.legal_name,
+  loaded: store.editableReducer.loaded,
   loopDuration: store.editableReducer.variables.loopDuration?.value,
   maxEndingHour: store.editableReducer.variables.maxEndHour?.value,
   minInitialHour: store.editableReducer.variables.minInitialHour?.value,

@@ -22,11 +22,7 @@ export class DailyPlan extends Component {
 
 
   render() {
-    if (this.props.progress < 1) {
-      return (
-        <Navigate to="/contract" />
-      )
-    } else {
+
       return (
         <div className='container'>
           <div className="title__time">
@@ -54,7 +50,7 @@ export class DailyPlan extends Component {
           </div>
         </div>
       );
-    }
+
   }
 }
 
@@ -66,8 +62,7 @@ const mapStateToProps = store => ({
   peakHourRange: store.editableReducer.variables.peakHourRange?.value,
   normalHourPrice: store.editableReducer.variables.normalHourSpotPrice?.value,
   peakHourPrice: store.editableReducer.variables.peakHourSpotPrice?.value,
-  loopDuration: store.editableReducer.variables.loopDuration?.value,
-  progress: store.clientReducer.progress
+  loopDuration: store.editableReducer.variables.loopDuration?.value
 })
 
 const mapDispatchToProps = dispatch => {

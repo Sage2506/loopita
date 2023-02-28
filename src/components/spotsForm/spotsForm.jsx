@@ -108,7 +108,6 @@ export class SpotsFormComponent extends Component {
     const { startHour, endHour, earliestHour, latestHour, peakHourRange, normalHourPrice, peakHourPrice, loopDuration } = this.props
 
     const { total } = calculateSpotServiceTotals(totalSpots, startHour, endHour, earliestHour, latestHour, parsePeakHourRange(peakHourRange), normalHourPrice, peakHourPrice, loopDuration);
-    if (this.props.progress < 1) { return (<Navigate to="/contract" />) }
     return (
       <div className='container'>
 

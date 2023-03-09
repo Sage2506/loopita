@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setEditable } from '../../actions/editable';
 import { setProgress } from '../../actions/client';

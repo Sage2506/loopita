@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { DayPicker } from 'react-day-picker';
 import NavButtons from '../common/navButtons';
-import { Navigate } from 'react-router-dom';
 import { setProgress } from '../../actions/client';
 import { setSpotsPlan, setSpotsPlanEndHour, setSpotsPlanStartHour } from '../../actions/plan';
 import TimeRangeInputComponent from '../dailyPlan/timeRangeInput';

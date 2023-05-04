@@ -18,6 +18,26 @@ const listScreenT = [
     state: false,
     maxPoint: '17:00',
     avgViewers: '1548'
+  },
+  {
+    id: 2,
+    name: 'Pantalla Blvd Aguacaliente Zona Financiera',
+    link: 'https://impactovisual.info/medio.php?id=257',
+    title: '1 hora',
+    service: '12 pm',
+    state: false,
+    maxPoint: '17:00',
+    avgViewers: '1750'
+  },
+  {
+    id: 3,
+    name: 'Pantalla Crucero estratégico Zona Este Tijuana',
+    link: 'https://impactovisual.info/medio.php?id=423',
+    title: '1 hora',
+    service: '12 pm',
+    state: false,
+    maxPoint: '17:00',
+    avgViewers: '1250'
   }
 ]
 export class Contract extends Component {

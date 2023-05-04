@@ -5,7 +5,8 @@ import NavButtons from '../common/navButtons';
 import { setProgress } from '../../actions/client';
 import { setSpotsPlan, setSpotsPlanEndHour, setSpotsPlanStartHour } from '../../actions/plan';
 import TimeRangeInputComponent from '../dailyPlan/timeRangeInput';
-import { calculateSpotServiceTotals, currencyFormat, parsePeakHourRange } from '../../utils/common';
+import { calculateSpotServiceTotals, currencyFormat, initVariables, parsePeakHourRange } from '../../utils/common';
+import { setEditable } from '../../actions/editable';
 
 
 export class SpotsFormComponent extends Component {
@@ -54,6 +55,9 @@ export class SpotsFormComponent extends Component {
   componentDidMount() {
     if (this.props.selectedDays) { this.setState({ selectedDays: this.props.selectedDays }) }
     if (this.props.totalSpots) { this.setState({ totalSpots: this.props.totalSpots }) }
+    if (!this.props.loaded) {
+      initVariables(this.props.setEditables)
+    }
   }
 
   startTimeUp = () => {
@@ -180,6 +184,7 @@ const mapStateToProps = store => ({
   normalHourPrice: store.editableReducer.variables?.normalHourSpotPrice?.value,
   peakHourPrice: store.editableReducer.variables.peakHourSpotPrice?.value,
   loopDuration: store.editableReducer.variables.loopDuration?.value,
+  loaded: store.editableReducer.loaded,
 })
 
 const mapDispatchToProps = dispatch => {
@@ -187,7 +192,8 @@ const mapDispatchToProps = dispatch => {
     setProgress: data => { dispatch(setProgress(data)) },
     setSpotsPlan: data => { dispatch(setSpotsPlan(data)) },
     changeStartHour: data => { dispatch(setSpotsPlanStartHour(data)) },
-    changeEndHour: data => { dispatch(setSpotsPlanEndHour(data)) }
+    changeEndHour: data => { dispatch(setSpotsPlanEndHour(data)) },
+    setEditables: data => { dispatch(setEditable(data)) }
   }
 }
 
